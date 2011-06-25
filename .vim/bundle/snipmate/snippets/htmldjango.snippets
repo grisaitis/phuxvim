@@ -1,0 +1,134 @@
+# Generic Tags
+snippet %
+	{% ${1} %}${2}
+snippet %%
+	{% ${1:tag_name} %}
+	${2}
+	{% end$1 %}
+snippet {
+	{{ ${1} }}${2}
+# Template Tags
+
+snippet au
+	{% autoescape ${1:off} %}
+	${2}
+	{% endautoescape %}
+snippet bl
+	{% block ${1} %}
+	${2}
+	{% endblock %}
+snippet #
+	{# ${1:comment} #}
+snippet co
+	{% comment %}
+	${1}
+	{% endcomment %}
+snippet cy
+	{% cycle ${1:val1} ${2:val2} ${3:as ${4}} %}
+snippet deb
+	{% debug %}
+snippet ex
+	{% extends "${1:base.html}" %}
+snippet fi
+	{% filter ${1} %}
+	${2}
+	{% endfilter %}
+snippet fio
+	{% firstof ${1} %}
+snippet for
+	{% for ${1} in ${2} %}
+	${3}
+	{% endfor %}
+snippet em
+	{% empty %}
+	${1}
+snippet if
+	{% if ${1} %}
+	${2}
+	{% endif %}
+snippet else
+	{% else %}
+	${1}
+snippet ifc
+	{% ifchanged %}${1}{% endifchanged %}
+snippet ife
+	{% ifequal ${1} ${2} %}
+	${3}
+	{% endifequal %}
+snippet ifne
+	{% ifnotequal ${1} ${2} %}
+	${3}
+	{% endifnotequal %}
+snippet inc
+	{% include "${1}" %}
+snippet lo
+	{% load ${1} %}
+snippet now
+	{% now "${1:jS F Y H:i}" %}
+snippet reg
+	{% regroup ${1} by ${2} as ${3} %}
+snippet sp
+	{% spaceless %}${1}{% endspaceless %}
+snippet ssi
+	{% ssi ${1} %}
+snippet tra
+	{% trans "${1:string}" %}
+snippet url
+	{% url ${1} as ${2} %}
+snippet widthratio
+	{% widthratio ${1:this_value} ${2:max_value} ${3:100} %}
+snippet with
+	{% with ${1} as ${2} %}
+# Template Filters
+
+# Note: Since SnipMate can't determine which template filter you are
+# expanding without the "|" character, these do not add the "|"
+# character.  These save a few keystrokes still.
+
+# Note: Template tags that take no arguments are not implemented.
+
+snippet ad
+	add:"${1}"
+snippet ce
+	center:"${1}"
+snippet cu
+	cut:"${1}"
+snippet da
+	date:"${1}"
+snippet dfa
+	default:"${1}"
+snippet din
+	default_if_none:"${1}"
+snippet ds
+	dictsort:"${1}"
+snippet dsr
+	dictsortreversed:"${1}"
+snippet div
+	divisibleby:"${1}"
+snippet flfm
+	floatformat:"${1}"
+snippet ge
+	get_digit:"${1}"
+snippet jo
+	join:"${1}"
+snippet le
+	length_is:"${1}"
+snippet pl
+	pluralize:"${1}"
+snippet re
+	removetags:"${1}"
+snippet sl
+	slice:"${1}"
+snippet st
+	stringformat:"${1}"
+snippet t
+	time:"${1}"
+snippet tr
+	truncatewords:${1}
+snippet trhtml
+	truncatewords_html:${1}
+snippet urltr
+	urlizetrunc:${1}
+snippet ww
+	wordwrap:${1}
+

@@ -1,0 +1,2 @@
+make sure to install pep8 for python source code checking... on ubuntu: sudo apt-get install pep8
+and for ack plugin to search in files you need ack
