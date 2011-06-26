@@ -35,7 +35,7 @@ set hidden
 "  :20  :  up to 20 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-set viminfo='10,\"100,:100,%,n~/.viminfo
+set viminfo='10,\"100,:100,n~/.viminfo
 
 function! ResCur()
   if line("'\"") <= line("$")
@@ -50,19 +50,17 @@ augroup resCur
 augroup END
 
 " Backup options
-set nobackup
-set noswapfile
+set backupdir=~/tmp
+set dir=~/tmp
 
-set formatoptions=l
+" when enter or o in a comment line, vim automatically inserts the comment
+" char in the new line. Disable it!
 
 " History options
 set history=1000  " Number of things to remember in history.
 
 " automatically read file changed outside of Vim
 set autoread
-
-" change working directory to currently viewed buffer automatically
-autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
 
 " # Visual options
 
@@ -227,7 +225,7 @@ set notimeout ttimeout ttimeoutlen=200
 set ttyfast
 set ttyscroll=3 " speed
 set lazyredraw " to avoid scrolling problems
-set scrolloff=10 " keep 3 lines before the bottom window end"
+set scrolloff=3 " keep 3 lines before the bottom window end"
 
 " Syntax coloring lines that are too long just slows down the world
 set synmaxcol=80
@@ -264,7 +262,10 @@ inoremap jk <esc>
 nnoremap <leader>bb :ls<cr>:b<space>
 
 let mapleader=","
+
 " General mapping
+
+map <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " center match
 map n nzz
@@ -326,10 +327,13 @@ map <leader>L :set list! list?<cr>
 map <Space> /
 
 " Remap Enter in normal mode
+
 " to insert new line below current no matter from which cursor position
-"nmap <cr> o<Esc>0c$<Esc>
+nmap <cr> o<Esc>0c$<Esc>
+
 " Stay at the old line with STRG Enter
 nmap <c-cr> o<Esc>0c$<Esc>k
+
 " Stay at this line and insert a new line above with Shift Enter
 nmap <s-cr> O<Esc>0c$<Esc>j
 
@@ -345,11 +349,8 @@ map + v%zf
 " Buffer movement
 
 " move to next or previous buffer with ALT+hl
-" or firefoxlike with ctrl+tab
 nmap <m-h> :bp<cr>
 nmap <m-l> :bn<cr>
-nmap <c-tab> :bn<cr>
-nmap <c-s-tab> :bp<cr>
 
 " quickfix reuses open windows
 set switchbuf=useopen
@@ -399,6 +400,7 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>:so ~/.gvimrc<cr>
 " save with strg-s
 map <c-s> <esc>:w<cr>
 imap <c-s> <esc>:w<cr>a
+
 " write & close buffer with alt+q
 map <m-q> <esc>:w<bar>:BD<cr>
 map <c-q> <esc>:BD<cr>
@@ -472,7 +474,18 @@ let g:pep8_map='<leader>8p'
 map <silent> <leader>xh :call HexHighlight()<cr>
 
 " PLUGIN SETTINGS
+
+nmap <silent> <leader>a :CommandT<CR>
+nmap <silent> <leader>bb :CommandTBuffer<CR>
+
+let g:CommandTMaxDepth=10
+
+let g:CommandTMaxHeight=10
+
+let g:CommandTMaxFiles=20000
+
 let g:SuperTabDefaultCompletionType = "context"
+
 " TagList Plugin Configuration
 let Tlist_Ctags_Cmd='/usr/bin/ctags'       " point taglist to ctags
 let Tlist_GainFocus_On_ToggleOpen = 1      " Focus on the taglist when its toggled
@@ -489,13 +502,6 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1
-
-" FUzzyFinder
-map <m-o> :FufFile<cr>
-map <m-b> :FufBuffer<cr>
-map <Leader>fh :FufHelp<cr>
-map <Leader>fm :FufMruFile<cr>
-map <Leader>fc :FufChangeList<cr>
 
 nnoremap <silent> <Leader>sy :YRShow<CR>
 
@@ -536,7 +542,7 @@ autocmd FileType html set filetype=htmldjango
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 omnifunc=pythoncomplete#Complete
-\ formatoptions+=croq softtabstop=4 smartindent
+\ softtabstop=4
 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 let python_highlight_all=1
 let python_highlight_exceptions=0
@@ -545,17 +551,6 @@ autocmd FileType html,xhtml,htmldjango setlocal expandtab shiftwidth=2 tabstop=2
 
 autocmd Filetype java setlocal errorformat=%A%f:%l:\ %m,%-Z%p^,%Csymbol\ \ :\ %m,%-C%.%#
 
-" Add the virtualenv's site-packages to vim path
-py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    sys.path.insert(0, project_base_dir)
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
 
 " making very magically stuff
 map \g :g/\v
