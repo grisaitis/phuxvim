@@ -1,0 +1,225 @@
+# Generic Tags
+snippet %
+{% ${1} %}${2}
+endsnippet
+
+snippet %%
+{% ${1:tag_name} %}
+  ${2}
+{% end$1 %}
+endsnippet
+
+snippet {
+{{ ${1} }}${2}
+endsnippet
+
+snippet ae
+{% autoescape ${1:off} %}
+  ${2}
+{% endautoescape %}
+endsnippet
+
+snippet b
+{% block ${1} %}
+  ${2}
+{% endblock %}
+endsnippet
+
+snippet #
+{# ${1:comment} #}
+endsnippet
+
+snippet c
+{% comment %}
+  ${1}
+{% endcomment %}
+endsnippet
+
+snippet cy
+{% cycle ${1:val1} ${2:val2} ${3:as ${4}} %}
+endsnippet
+
+snippet de
+{% debug %}
+endsnippet
+
+snippet em
+{% empty %}
+  ${1}
+endsnippet
+
+snippet ex
+{% extends "${1:base.html}" %}
+endsnippet
+
+snippet f
+{% filter ${1} %}
+  ${2}
+{% endfilter %}
+endsnippet
+
+snippet fo
+{% firstof ${1} %}
+endsnippet
+
+snippet for
+{% for ${1} in ${2} %}
+  ${3}
+{% endfor %}
+endsnippet
+
+snippet if
+{% if ${1} %}
+  ${2}
+{% endif %}
+endsnippet
+
+snippet el
+{% else %}
+  ${1}
+endsnippet
+
+snippet ifc
+{% ifchanged %}${1}{% endifchanged %}
+endsnippet
+
+snippet ife
+{% ifequal ${1} ${2} %}
+  ${3}
+{% endifequal %}
+endsnippet
+
+snippet ifn
+{% ifnotequal ${1} ${2} %}
+  ${3}
+{% endifnotequal %}
+endsnippet
+
+snippet i
+{% include "${1}" %}
+endsnippet
+
+snippet l
+{% load ${1} %}
+endsnippet
+
+snippet n
+{% now "${1:jS F Y H:i}" %}
+endsnippet
+
+snippet r
+{% regroup ${1} by ${2} as ${3} %}
+endsnippet
+
+snippet sl
+{% spaceless %}${1}{% endspaceless %}
+endsnippet
+
+snippet ssi
+{% ssi ${1} %}
+endsnippet
+
+snippet t
+{% trans "${1:string}" %}
+endsnippet
+
+snippet u
+{% url ${1} as ${2} %}
+endsnippet
+
+snippet wr
+{% widthratio ${1:this_value} ${2:max_value} ${3:100} %}
+endsnippet
+
+snippet w
+{% with ${1} as ${2} %}
+endsnippet
+
+snippet a
+add:"${1}"
+endsnippet
+
+snippet ce
+center:"${1}"
+endsnippet
+
+snippet c
+cut:"${1}"
+endsnippet
+
+snippet da
+date:"${1}"
+endsnippet
+
+snippet d
+default:"${1}"
+endsnippet
+
+snippet din
+default_if_none:"${1}"
+endsnippet
+
+snippet ds
+dictsort:"${1}"
+endsnippet
+
+snippet dsr
+dictsortreversed:"${1}"
+endsnippet
+
+snippet db
+divisibleby:"${1}"
+endsnippet
+
+snippet ff
+floatformat:"${1}"
+endsnippet
+
+snippet gd
+get_digit:"${1}"
+endsnippet
+
+snippet j
+join:"${1}"
+endsnippet
+
+snippet li
+length_is:"${1}"
+endsnippet
+
+snippet p
+pluralize:"${1}"
+endsnippet
+
+snippet rt
+removetags:"${1}"
+endsnippet
+
+snippet s
+slice:"${1}"
+endsnippet
+
+snippet sf
+stringformat:"${1}"
+endsnippet
+
+snippet t
+time:"${1}"
+endsnippet
+
+snippet tw
+truncatewords:${1}
+endsnippet
+
+snippet twh
+truncatewords_html:${1}
+endsnippet
+
+snippet ut
+urlizetrunc:${1}
+endsnippet
+
+snippet ww
+wordwrap:${1}
+endsnippet
+

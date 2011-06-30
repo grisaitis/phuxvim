@@ -52,7 +52,7 @@ function! s:init() "{{{
 " Initialize variables:
 
 	" autoclose
-	call s:option_init("autoclose", 0)
+	call s:option_init("autoclose", 1)
 
 	" matchpairs
 	call s:option_init("matchpairs", string(&matchpairs)[1:-2])

@@ -66,10 +66,13 @@ set autoread
 
 " UI options
 if has("gui_running")
-     colorscheme wombat256mod
+    colorscheme zmrok
 else
     colorscheme xterm16
 endif
+
+"cursors dont blink!
+set gcr=a:blinkwait0
 
 " set Vim to 256 colors:
 set t_Co=256
@@ -83,15 +86,8 @@ set showcmd
 " show matching bracket
 set showmatch
 
-" Display the cursor position on the last line of the screen or in the status
-" line of a window
-set ruler
-
 " Set the command window height to 2 lines
 set cmdheight=1
-
-" no cursor blinking
-set gcr=a:blinkon0
 
 " This makes more sense than the default of 1
 set winminheight=0
@@ -174,13 +170,10 @@ set expandtab
 set shiftround
 set smarttab
 
-" indent comments correctly?
-set fo+=c
-
 " # Navigation options
 
 " move freely between files
-set whichwrap=b,s,h,l,<,>,[,]
+"set whichwrap=b,s,h,l,<,>,[,]
 
 " add < > to chars that form pairs (see % command)
 set matchpairs+=<:>
@@ -188,7 +181,7 @@ set matchpairs+=<:>
 " Enable error files & error jumping
 set cf
 " nice errorlisting in that quickfix Window
-setlocal errorformat=%A%f:%l:\ %m,%-Z%p^,%Csymbol\ \ :\ %m,%-C%.%#
+"setlocal errorformat=%A%f:%l:\ %m,%-Z%p^,%Csymbol\ \ :\ %m,%-C%.%#
 
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
@@ -225,8 +218,6 @@ set ttyfast
 set ttyscroll=3 " speed
 set lazyredraw " to avoid scrolling problems
 set scrolloff=5 " keep cursor distanced 5 lines till window ends
-" Syntax coloring lines that are too long just slows down the world
-set synmaxcol=120
 
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
@@ -299,45 +290,23 @@ map gc gdb<C-W>f
 
 " # Movement mapping
 
-" arrow keys are evil!!
-inoremap <Left>  <NOP>
-inoremap <Right> <NOP>
-inoremap <Up>    <NOP>
-inoremap <Down>  <NOP>
-
 " Copy Paste
 map <leader>p "+p
 cmap <leader>p <C-R>+
 vnoremap <leader>y "+y
 
-" paste lines with incrementing/decrementing numbers, especially usefull for array[] rows
-nnoremap <leader>up yyp<c-a>
-nnoremap <leader>dp yyp<c-x>
-
 " Highlight toggle
 nmap <leader>h :set hlsearch! hlsearch?<cr>
-
-" show EOL, Tabs, trailing whitespaces
-map <leader>L :set list! list?<cr>
 
 map <Space> /
 
 " Remap Enter in normal mode
-
-" to insert new line below current no matter from which cursor position
-nmap <cr> o<Esc>0c$<Esc>
 
 " Stay at the old line with STRG Enter
 nmap <c-cr> o<Esc>0c$<Esc>k
 
 " Stay at this line and insert a new line above with Shift Enter
 nmap <s-cr> O<Esc>0c$<Esc>j
-
-" Use the Shift-Space to open and close code folds
-" in VISUAL mode Shift-Space folds selected Code
-" in NORMAL mode Shift-Space opens/closes fold, if any.
-nnoremap <silent> <S-Space> @=(foldlevel('.')?'zA':'l')<CR>
-vnoremap <S-Space> zf
 
 
 " Buffer movement
@@ -357,10 +326,10 @@ map <c-l> <C-W>l
 map <c-h> <C-W>h
 
 
-noremap <silent> <right>  :vertical resize +10<CR>
-noremap <silent> <down> :resize +10<CR>
-noremap <silent> <up> :resize -10<CR>
-noremap <silent> <left> :vertical resize -10<CR>
+noremap <silent> <right>  :vertical resize +4<CR>
+noremap <silent> <down> :resize +4<CR>
+noremap <silent> <up> :resize -4<CR>
+noremap <silent> <left> :vertical resize -4<CR>
 
 " remap Y to behave like C or D...
 map Y y$
@@ -426,15 +395,17 @@ endfunction
 " PLUGIN MAPPING
 
 map <silent> <leader>ac :exec "Ack ".expand("<cword>")<CR>
+map <silent> <leader>ak :Ack 
+
 map <leader>fa :FufCoverageFile<cr>
 map <leader>ff :FufFile<cr>
 map <leader>fh :FufHelp<cr>
 map <leader>ft :FufBufferTagAll<cr>
 map <leader>fd :FufDir<cr>
 
-"let g:UltiSnipsExpandTrigger="<c-l>"
-"let g:UltiSnipsJumpForwardTrigger="<c-j>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 let g:pyref_mapping = 'K'
 
@@ -444,22 +415,13 @@ nnoremap <silent> <F2> :TagbarToggle<CR>
 
 map <F3> :NERDTreeToggle<CR>
 
-let g:pep8_map='<leader>8p'
-
-nmap <silent> <leader>a :CommandT<CR>
-nmap <silent> <leader>bb :CommandTBuffer<CR>
-
 " PLUGIN SETTINGS
 
 let g:tagbar_autoclose = 1
 
 let g:tagbar_width = 30
 
-let g:CommandTMaxDepth=10
-
-let g:CommandTMaxHeight=10
-
-let g:CommandTMaxFiles=20000
+let g:tagbar_ctags_bin='/usr/bin/ctags'
 
 let g:SuperTabDefaultCompletionType = "context"
 
@@ -499,10 +461,7 @@ function! ToggleList(bufname, pfx)
   endif
 endfunction
 
-nmap <silent> <m-k> :cp<CR>
-nmap <silent> <m-j> :cn<CR>
-
-autocmd FileType html set filetype=htmldjango
+autocmd FileType html set filetype=htmldjango.html
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 \ softtabstop=4 textwidth=79
 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
@@ -512,9 +471,3 @@ let python_highlight_builtins=0
 autocmd FileType html,xhtml,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd Filetype java setlocal errorformat=%A%f:%l:\ %m,%-Z%p^,%Csymbol\ \ :\ %m,%-C%.%#
 
-
-" making very magically stuff
-map \g :g/\v
-map \v :v/\v
-map \s :%s/\v
-map ,/ /\v
