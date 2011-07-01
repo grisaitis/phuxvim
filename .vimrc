@@ -62,9 +62,6 @@ set history=1000  " Number of things to remember in history.
 " automatically read file changed outside of Vim
 set autoread
 
-" automatically change the working dir to current buffer's
-set acd
-
 " # Visual options
 
 " UI options
@@ -161,13 +158,7 @@ set laststatus=2
 " Attempt to determine the type of a file based on its name and possibly its
 " contents.  Use this to allow intelligent auto-indenting for each filetype,
 " and for plugins that are filetype specific.
-
 set autoindent
-" When opening a new line and no filetype-specific indenting is enabled, keep
-" the same indent as the line you're currently on. Useful for READMEs, etc.
-
-" Intendation (4 = RoR default)
-set shiftwidth=4
 
 " same (Spaces feel like Tabs)
 set softtabstop=4
@@ -180,9 +171,6 @@ set shiftround
 set smarttab
 
 " # Navigation options
-
-" move freely between files
-"set whichwrap=b,s,h,l,<,>,[,]
 
 " add < > to chars that form pairs (see % command)
 set matchpairs+=<:>
@@ -235,7 +223,7 @@ set confirm
 " Better command-line completion
 set wildmenu
 set wildignore+=*.pyc,*.zip,*.gz,*.bz,*.tar,*.jpg,*.png,*.gif,*.avi,*.wmv,*.ogg,*.mp3,*.mov
-set wildmode=longest,list:full
+set wildmode=full
 
 " Completion settings in insertmode
 set complete=.,w,b,t,i
@@ -320,6 +308,11 @@ nmap <s-cr> O<Esc>0c$<Esc>j
 
 " Buffer movement
 
+" buffer switcher
+" notice set wildmode=full is recommended to complete buffernames with this
+" bind
+nnoremap <leader>bb :buffers<CR>:buffer<Space>
+
 " move to next or previous buffer with ALT+hl
 nmap <m-h> :bp<cr>
 nmap <m-l> :bn<cr>
@@ -330,6 +323,7 @@ set switchbuf=useopen
 
 " disable search highlighting till next search
 nnoremap <silent> <leader>h :noh<CR><C-l>
+
 
 " Window movement
 noremap <silent> <right> <c-w>l
@@ -408,12 +402,11 @@ map <leader>fa :cd ~/django<cr>:FufCoverageFile<cr>
 map <leader>ff :FufFile<cr>
 map <leader>fh :FufHelp<cr>
 map <leader>ft :FufBufferTagAll<cr>
+map <leader>fs :FufBuffer<cr>
 map <leader>fd :FufDir<cr>
 map <leader>fc :FufCoverageFile<cr>
 
 let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', ]
-let g:fuf_fuzzyRefining = 1
-let g:fuf_splitPathMatching = 1
 
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
@@ -429,6 +422,8 @@ map <F3> :NERDTreeToggle<CR>
 
 " PLUGIN SETTINGS
 
+let g:buftabs_only_basename=1
+let g:buftabs_separator=' '
 let g:tagbar_autoclose = 1
 
 let g:tagbar_width = 30
@@ -436,11 +431,6 @@ let g:tagbar_width = 30
 let g:tagbar_ctags_bin='/usr/bin/ctags'
 
 let g:SuperTabDefaultCompletionType = "context"
-
-"let g:miniBufExplMapWindowNavVim = 1
-"let g:miniBufExplMapWindowNavArrows = 1
-"let g:miniBufExplMapCTabSwitchBufs = 1
-"let g:miniBufExplModSelTarget = 1
 
 nnoremap <silent> <Leader>sy :YRShow<CR>
 
