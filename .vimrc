@@ -62,6 +62,9 @@ set history=1000  " Number of things to remember in history.
 " automatically read file changed outside of Vim
 set autoread
 
+" automatically change the working dir to current buffer's
+set acd
+
 " # Visual options
 
 " UI options
@@ -91,6 +94,12 @@ set cmdheight=1
 
 " This makes more sense than the default of 1
 set winminheight=0
+
+" minimum winheight of active window
+set winheight=10
+
+set winwidth=79
+set winminwidth=10
 
 " Line wrapping off
 set nowrap
@@ -226,12 +235,11 @@ set confirm
 " Better command-line completion
 set wildmenu
 set wildignore+=*.pyc,*.zip,*.gz,*.bz,*.tar,*.jpg,*.png,*.gif,*.avi,*.wmv,*.ogg,*.mp3,*.mov
-set wildmode=list:longest,full
+set wildmode=longest,list:full
 
 " Completion settings in insertmode
-set complete=.,w,b,t
-"set complete-=i
-set completeopt=longest,menuone
+set complete=.,w,b,t,i
+set completeopt=menuone
 
 " Accept macros within macros
 set remap
@@ -254,7 +262,11 @@ let mapleader=","
 
 " General mapping
 
-map <leader>cd :cd %:p:h<CR>:pwd<CR>
+" delete char after cursor in insert mode, same as del key
+inoremap <c-d> <c-o>x
+
+" cd to current buffer's cwd, disabled because of acd
+"map <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " center match
 map n nzz
@@ -295,9 +307,6 @@ map <leader>p "+p
 cmap <leader>p <C-R>+
 vnoremap <leader>y "+y
 
-" Highlight toggle
-nmap <leader>h :set hlsearch! hlsearch?<cr>
-
 map <Space> /
 
 " Remap Enter in normal mode
@@ -318,18 +327,15 @@ nmap <m-l> :bn<cr>
 " quickfix reuses open windows
 set switchbuf=useopen
 
+
+" disable search highlighting till next search
+nnoremap <silent> <leader>h :noh<CR><C-l>
+
 " Window movement
-
-map <c-j> <C-W>j
-map <c-k> <C-W>k
-map <c-l> <C-W>l
-map <c-h> <C-W>h
-
-
-noremap <silent> <right>  :vertical resize +4<CR>
-noremap <silent> <down> :resize +4<CR>
-noremap <silent> <up> :resize -4<CR>
-noremap <silent> <left> :vertical resize -4<CR>
+noremap <silent> <right> <c-w>l
+noremap <silent> <down> <c-w>j
+noremap <silent> <up> <c-w>k
+noremap <silent> <left> <c-w>h
 
 " remap Y to behave like C or D...
 map Y y$
@@ -397,11 +403,17 @@ endfunction
 map <silent> <leader>ac :exec "Ack ".expand("<cword>")<CR>
 map <silent> <leader>ak :Ack 
 
-map <leader>fa :FufCoverageFile<cr>
+" exchange ~/django with path to your project
+map <leader>fa :cd ~/django<cr>:FufCoverageFile<cr>
 map <leader>ff :FufFile<cr>
 map <leader>fh :FufHelp<cr>
 map <leader>ft :FufBufferTagAll<cr>
 map <leader>fd :FufDir<cr>
+map <leader>fc :FufCoverageFile<cr>
+
+let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', ]
+let g:fuf_fuzzyRefining = 1
+let g:fuf_splitPathMatching = 1
 
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
@@ -425,10 +437,10 @@ let g:tagbar_ctags_bin='/usr/bin/ctags'
 
 let g:SuperTabDefaultCompletionType = "context"
 
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1
+"let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplMapWindowNavArrows = 1
+"let g:miniBufExplMapCTabSwitchBufs = 1
+"let g:miniBufExplModSelTarget = 1
 
 nnoremap <silent> <Leader>sy :YRShow<CR>
 
