@@ -91,15 +91,15 @@ ${1:FIELDNAME} = models.XMLField(schema_path=${2:None}${3:, blank=True})
 # Relational Fields
 endsnippet
 
-snippet fk
+snippet foreign
 ${1:FIELDNAME} = models.ForeignKey(${2:OtherModel}${3:, related_name=''}${4:, limit_choices_to=}${5:, to_field=''})
 endsnippet
 
-snippet m2m
+snippet many
 ${1:FIELDNAME} = models.ManyToManyField(${2:OtherModel}${3:, related_name=''}${4:, limit_choices_to=}${5:, symmetrical=False}${6:, through=''}${7:, db_table=''})
 endsnippet
 
-snippet o2o
+snippet one
 ${1:FIELDNAME} = models.OneToOneField(${2:OtherModel}${3:, parent_link=True}${4:, related_name=''}${5:, limit_choices_to=}${6:, to_field=''})
 
 # Code Skeletons
@@ -117,19 +117,6 @@ snippet model
 class ${1:ModelName}(models.Model):
         """${2:docstring}"""
         ${3}
-
-        class Meta:
-                ${4}
-
-        def __unicode__(self):
-                ${5}
-
-        def save(self, force_insert=False, force_update=False):
-                ${6}
-
-        @models.permalink
-        def get_absolute_url(self):
-                return ('${7:view_or_url_name}' ${8})
 
 endsnippet
 

@@ -26,6 +26,8 @@ if version >= 700
     hi CursorColumn   guibg=#0d0d0d
     hi MatchParen     guifg=Black      guibg=magenta gui=bold
 
+    hi SpecialKey    guifg=red
+
     hi Pmenu          guifg=#141414    guibg=#CDA869
     hi PmenuSel       guifg=#F8F8F8    guibg=#9B703F
     hi PmenuSbar                       guibg=#DAEFA3

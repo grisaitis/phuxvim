@@ -107,15 +107,12 @@ set lbr
 set showmode
 
 " set charracters for whitespaces, etc..
-set listchars=tab:>-,extends:>,precedes:<
-
-" No noise just a little flashy
-set visualbell
+set list
+set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
 
 " shorten messages + no welcome screen at startup; see :h shortmess for more
 " info
 set shortmess=atI
-
 " FOLD options
 
 " These commands open folds
@@ -161,14 +158,16 @@ set laststatus=2
 set autoindent
 
 " same (Spaces feel like Tabs)
+set tabstop=8
 set softtabstop=4
+set smarttab
+set shiftwidth=4
 
 " Tab converted to spaces
 set expandtab
 
 " when at 3 spaces, and I hit > ... go to 4, not 5
 set shiftround
-set smarttab
 
 " # Navigation options
 
@@ -215,6 +214,8 @@ set ttyfast
 set ttyscroll=3 " speed
 set lazyredraw " to avoid scrolling problems
 set scrolloff=5 " keep cursor distanced 5 lines till window ends
+set sidescrolloff=7
+set sidescroll=1
 
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
@@ -223,7 +224,7 @@ set confirm
 " Better command-line completion
 set wildmenu
 set wildignore+=*.pyc,*.zip,*.gz,*.bz,*.tar,*.jpg,*.png,*.gif,*.avi,*.wmv,*.ogg,*.mp3,*.mov
-set wildmode=full
+set wildmode=longest,list:full
 
 " Completion settings in insertmode
 set complete=.,w,b,t,i
@@ -394,17 +395,18 @@ endfunction
 
 " PLUGIN MAPPING
 
-map <silent> <leader>ac :exec "Ack ".expand("<cword>")<CR>
-map <silent> <leader>ak :Ack 
+map <silent> <leader>a :exec "Ack ".expand("<cword>")<cr>
 
 " exchange ~/django with path to your project
-map <leader>fa :cd ~/django<cr>:FufCoverageFile<cr>
+"map <leader>fj cd ~/django/todo<cr>:FufCoverageFile<cr>
+map <leader>fj :FufCoverageFile<cr>
 map <leader>ff :FufFile<cr>
+map <leader>fc :FufFileWithCurrentBufferDir<cr>
 map <leader>fh :FufHelp<cr>
-map <leader>ft :FufBufferTagAll<cr>
-map <leader>fs :FufBuffer<cr>
+map <leader>fb :FufBuffer<cr>
 map <leader>fd :FufDir<cr>
-map <leader>fc :FufCoverageFile<cr>
+map <leader>ft :FufTag<cr>
+map <leader>fa :FufBufferTagAll<cr>
 
 let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', ]
 
@@ -464,6 +466,7 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 autocmd FileType html set filetype=htmldjango.html
+autocmd FileType python set ft=python.django
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 \ softtabstop=4 textwidth=79
 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
