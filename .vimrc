@@ -16,6 +16,9 @@ call pathogen#helptags()
 
 filetype indent plugin on
 
+"no bells; if you want visual message type => set visualbell
+set visualbell t_vb=
+
 " These are highly recommended options.
 
 " Set 'nocompatible' to ward off unexpected things that your distro might
@@ -35,7 +38,7 @@ set hidden
 "  :20  :  up to 20 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-set viminfo='10,\"100,:100,n~/.viminfo
+set viminfo='50,\"100,:100,n~/.viminfo
 
 function! ResCur()
   if line("'\"") <= line("$")
@@ -73,18 +76,18 @@ endif
 
 "cursors dont blink!
 set gcr=a:blinkwait0
-
+" cursor line
+set cul
 " set Vim to 256 colors:
 set t_Co=256
-
-" Display line numbers on the left
-set nu
 
 " Show partial commands in the last line of the screen
 set showcmd
 
 " show matching bracket
 set showmatch
+set matchtime=2 " how many tenths of a second to blink matching brackets for
+
 
 " Set the command window height to 2 lines
 set cmdheight=1
@@ -92,11 +95,6 @@ set cmdheight=1
 " This makes more sense than the default of 1
 set winminheight=0
 
-" minimum winheight of active window
-set winheight=10
-
-set winwidth=79
-set winminwidth=10
 
 " Line wrapping off
 set nowrap
@@ -156,17 +154,16 @@ set laststatus=2
 " contents.  Use this to allow intelligent auto-indenting for each filetype,
 " and for plugins that are filetype specific.
 set autoindent
+set smartindent
 
 " same (Spaces feel like Tabs)
-set tabstop=8
 set softtabstop=4
-set smarttab
 set shiftwidth=4
 
 " Tab converted to spaces
 set expandtab
 
-" when at 3 spaces, and I hit > ... go to 4, not 5
+" when at 3 spaces, and I hit > ... go to 4, not 7
 set shiftround
 
 " # Navigation options
@@ -213,8 +210,8 @@ set notimeout ttimeout ttimeoutlen=200
 set ttyfast
 set ttyscroll=3 " speed
 set lazyredraw " to avoid scrolling problems
-set scrolloff=5 " keep cursor distanced 5 lines till window ends
-set sidescrolloff=7
+set scrolloff=3 " keep cursor distanced 5 lines till window ends
+set sidescrolloff=5
 set sidescroll=1
 
 " Instead of failing a command because of unsaved changes, instead raise a
@@ -224,11 +221,13 @@ set confirm
 " Better command-line completion
 set wildmenu
 set wildignore+=*.pyc,*.zip,*.gz,*.bz,*.tar,*.jpg,*.png,*.gif,*.avi,*.wmv,*.ogg,*.mp3,*.mov
-set wildmode=longest,list:full
+set wildmode=list:longest
+
+set whichwrap+=<,>,[,],h,l  " backspace and cursor can go lines up or down
 
 " Completion settings in insertmode
 set complete=.,w,b,t,i
-set completeopt=menuone
+set completeopt=menu,longest,preview
 
 " Accept macros within macros
 set remap
@@ -261,6 +260,7 @@ inoremap <c-d> <c-o>x
 map n nzz
 map N Nzz
 
+nmap <silent> <leader>n :set number!<cr>
 " faster viewport moving
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
@@ -327,10 +327,10 @@ nnoremap <silent> <leader>h :noh<CR><C-l>
 
 
 " Window movement
-noremap <silent> <right> <c-w>l
-noremap <silent> <down> <c-w>j
-noremap <silent> <up> <c-w>k
-noremap <silent> <left> <c-w>h
+noremap <silent> <c-l> <c-w>l
+noremap <silent> <c-j> <c-w>j
+noremap <silent> <c-k> <c-w>k
+noremap <silent> <c-h> <c-w>h
 
 " remap Y to behave like C or D...
 map Y y$
