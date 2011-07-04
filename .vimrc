@@ -3,21 +3,15 @@
 "
 " compiled by: vagubunt
 " http://vagubunt.wordpress.com
-" last update: 25.06.11
+" last update: 04.07.11
 
 
-" ##### OPTIONS #####
 
-" Needed on some linux distros.
-" see http://www.adamlowe.me/2009/12/vim-destroys-all-other-rails-editors.html
-filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+" ##### OPTIONS
 
-filetype indent plugin on
 
-"no bells; if you want visual message type => set visualbell
-set visualbell t_vb=
+
+" --- General Options
 
 " These are highly recommended options.
 
@@ -31,15 +25,53 @@ set nocompatible
 " saving, and swap files will keep you safe if your computer crashes.
 set hidden
 
-" Viminfo File
-" Tell vim to remember certain things when we exit
-"  '10  :  marks will be remembered for up to 10 previously edited files
-"  "100 :  will save up to 100 lines for each register
-"  :20  :  up to 20 lines of command-line history will be remembered
-"  %    :  saves and restores the buffer list
-"  n... :  where to save the viminfo files
-set viminfo='50,\"100,:100,n~/.viminfo
+" Backup options
+set backupdir=~/tmp
+set dir=~/tmp
 
+
+" Needed on some linux distros.
+" see http://www.adamlowe.me/2009/12/vim-destroys-all-other-rails-editors.html
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+filetype indent plugin on
+
+" automatically read file changed outside of Vim
+set autoread
+
+" Instead of failing a command because of unsaved changes, instead raise a
+" dialogue asking if you wish to save changed files.
+set confirm
+
+" Modelines have historically been a source of security vulnerabilities.  As
+" such, it may be a good idea to disable them and use the securemodelines
+" script, <http://www.vim.org/scripts/script.php?script_id=1876>.
+set nomodeline
+
+" Quickly time out on keycodes, but never time out on mappings
+set notimeout ttimeout ttimeoutlen=200
+
+" Accept macros within macros
+set remap
+
+" Copy to Clipboard (on Unix)
+set clipboard+=unnamed
+set clipboard+=+
+
+" got scrolling options? uncomment this
+"set ttyfast
+"set ttyscroll=3 " speed
+"set lazyredraw " to avoid scrolling problems
+
+" show stuff at the left if not wrapping
+set sidescrolloff=5
+set sidescroll=1
+
+" keep cursor distanced 5 lines till window ends
+set scrolloff=3
+
+" jump to last cursor position when opening files
 function! ResCur()
   if line("'\"") <= line("$")
     normal! g`"
@@ -52,34 +84,28 @@ augroup resCur
   autocmd BufWinEnter * call ResCur()
 augroup END
 
-" Backup options
-set backupdir=~/tmp
-set dir=~/tmp
+" --- History Options
 
-" when enter or o in a comment line, vim automatically inserts the comment
-" char in the new line. Disable it!
+" Viminfo File
+" Tell vim to remember certain things when we exit
+"  '50  :  marks will be remembered for up to 50 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :100  :  up to 100 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+set viminfo='50,\"100,:100,n~/.viminfo
 
 " History options
 set history=1000  " Number of things to remember in history.
 
-" automatically read file changed outside of Vim
-set autoread
 
-" # Visual options
 
-" UI options
-if has("gui_running")
-    colorscheme zmrok
-else
-    colorscheme xterm16
-endif
+" ##### VISUAL
 
-"cursors dont blink!
-set gcr=a:blinkwait0
-" cursor line
-set cul
-" set Vim to 256 colors:
-set t_Co=256
+
+
+" Explanation needed? :)
+set showmode
 
 " Show partial commands in the last line of the screen
 set showcmd
@@ -88,6 +114,10 @@ set showcmd
 set showmatch
 set matchtime=2 " how many tenths of a second to blink matching brackets for
 
+" Line wrapping off
+set nowrap
+" but don't split words
+set lbr
 
 " Set the command window height to 2 lines
 set cmdheight=1
@@ -95,14 +125,8 @@ set cmdheight=1
 " This makes more sense than the default of 1
 set winminheight=0
 
-
-" Line wrapping off
-set nowrap
-" but don't split words
-set lbr
-
-" Explanation needed? :)
-set showmode
+" quickfix reuses open windows
+set switchbuf=useopen
 
 " set charracters for whitespaces, etc..
 set list
@@ -111,21 +135,33 @@ set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
 " shorten messages + no welcome screen at startup; see :h shortmess for more
 " info
 set shortmess=atI
-" FOLD options
-
-" These commands open folds
-set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
-
-" automatically fold code depending on syntax highlighing
-set foldmethod=indent
-set fillchars=vert:\|,fold:\ ,diff:-
-
-" SYNTAX
 
 " Enable syntax highlighting
 syntax on
 
-" STATUSLINE options
+"no bells; if you want visual message type => set visualbell
+set visualbell t_vb=
+
+
+" --- Cursor Options
+
+"cursors dont blink!
+set gcr=a:blinkwait0
+" cursor line
+set cul
+
+" --- Color Options
+if has("gui_running")
+    colorscheme zmrok
+else
+    colorscheme xterm16
+endif
+
+" set Vim to 256 colors:
+set t_Co=256
+
+
+" --- Statusline Options
 set statusline= "clear it first
 set statusline+=%n:		" - buffer number, followed by a colon
 set statusline+=%<%f		" - relative filename, truncated from the left
@@ -146,9 +182,10 @@ set statusline+=%P		" - position in buffer as percentage
 set laststatus=2
 
 
-" # FORMATTING options
+" --- Indentation Options
 
-" INTENDATION options
+" never change tabstop from default(8), only change shiftwidth and
+" softtabstop!
 
 " Attempt to determine the type of a file based on its name and possibly its
 " contents.  Use this to allow intelligent auto-indenting for each filetype,
@@ -166,15 +203,32 @@ set expandtab
 " when at 3 spaces, and I hit > ... go to 4, not 7
 set shiftround
 
-" # Navigation options
+
+" --- Folding Options
+
+" These commands open folds
+set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
+
+" automatically fold code depending on syntax highlighing
+set foldmethod=indent
+set fillchars=vert:\|,fold:\ ,diff:-
+
+
+
+" ##### MOVEMENT
+
+
+
+" --- General Movement
+
+" backspace and cursor can go lines up or down
+set whichwrap+=<,>,[,],h,l
 
 " add < > to chars that form pairs (see % command)
 set matchpairs+=<:>
 
 " Enable error files & error jumping
 set cf
-" nice errorlisting in that quickfix Window
-"setlocal errorformat=%A%f:%l:\ %m,%-Z%p^,%Csymbol\ \ :\ %m,%-C%.%#
 
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
@@ -185,7 +239,7 @@ set nostartofline
 set backspace=indent,eol,start
 
 
-" # Search options
+" --- Search Options
 
 " Highlight searches
 set hlsearch
@@ -194,109 +248,72 @@ set hlsearch
 set ignorecase
 set smartcase
 
-set incsearch " do highlight as you type your search phrase
+" do highlight as you type your search phrase
+set incsearch
 
-" # Misc options
 
-" Modelines have historically been a source of security vulnerabilities.  As
-" such, it may be a good idea to disable them and use the securemodelines
-" script, <http://www.vim.org/scripts/script.php?script_id=1876>.
-set nomodeline
 
-" Quickly time out on keycodes, but never time out on mappings
-set notimeout ttimeout ttimeoutlen=200
+" ##### COMPLETION
 
-" we have a fast terminal :)
-set ttyfast
-set ttyscroll=3 " speed
-set lazyredraw " to avoid scrolling problems
-set scrolloff=3 " keep cursor distanced 5 lines till window ends
-set sidescrolloff=5
-set sidescroll=1
 
-" Instead of failing a command because of unsaved changes, instead raise a
-" dialogue asking if you wish to save changed files.
-set confirm
 
 " Better command-line completion
 set wildmenu
 set wildignore+=*.pyc,*.zip,*.gz,*.bz,*.tar,*.jpg,*.png,*.gif,*.avi,*.wmv,*.ogg,*.mp3,*.mov
 set wildmode=list:longest
 
-set whichwrap+=<,>,[,],h,l  " backspace and cursor can go lines up or down
-
 " Completion settings in insertmode
 set complete=.,w,b,t,i
 set completeopt=menu,longest,preview
 
-" Accept macros within macros
-set remap
 
-" Copy to Clipboard (on Unix)
-set clipboard+=unnamed
-set clipboard+=+
 
-" ##### MAPPING #####
+" ##### PLUGIN SETTINGS
+
+
+
+let g:tagbar_autoclose = 1
+
+let g:tagbar_width = 30
+
+let g:tagbar_ctags_bin='/usr/bin/ctags'
+
+let g:SuperTabDefaultCompletionType = "context"
+
+let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', ]
+
+
+
+" ##### MAPPINGS
+
+
+
+"--- General mappings
+
+let mapleader=","
 
 " additional esc's for ins mode.
 " note: ctrl [ or ctrl c work also as esc
 inoremap kj <esc>
 inoremap jk <esc>
 
-" nice buffer switching
-nnoremap <leader>bb :ls<cr>:b<space>
-
-let mapleader=","
-
-" General mapping
-
 " delete char after cursor in insert mode, same as del key
 inoremap <c-d> <c-o>x
 
-" cd to current buffer's cwd, disabled because of acd
+" cd to current buffer's cwd, disabled because of ack, fuzzy and commandt
 "map <leader>cd :cd %:p:h<CR>:pwd<CR>
-
-" center match
-map n nzz
-map N Nzz
-
-nmap <silent> <leader>n :set number!<cr>
-" faster viewport moving
-nnoremap <C-e> 3<C-e>
-nnoremap <C-y> 3<C-y>
-
-" jump to line AND column
-nnoremap ' `
-nnoremap ` '
-
-" allow command line editing like emacs
-cnoremap <C-A>      <Home>
-cnoremap <C-B>      <Left>
-cnoremap <C-E>      <End>
-cnoremap <C-F>      <Right>
-cnoremap <C-N>      <End>
-cnoremap <C-P>      <Up>
-
-" Open help for word under cursor
-map <F1> <ESC>:exec "help ".expand("<cword>")<CR>
-
-" Enables you to save files with :w!! by using sudo if you forgot to open it as root
-cmap w!! %!sudo tee > /dev/null %
-
-" Remap gf to open a new split for the file under cursor
-map gf <C-W>f
-
-" go to declaration if cursors on an instance / variable...
-map gc gdb<C-W>f
-
-" # Movement mapping
 
 " Copy Paste
 map <leader>p "+p
 cmap <leader>p <C-R>+
 vnoremap <leader>y "+y
 
-map <Space> /
+nmap <silent> <leader>n :set number!<cr>
+
+map <leader>w :set nowrap!<CR>
+
+" Enables you to save files with :w!! by using sudo if you forgot to open it as root
+cmap w!! %!sudo tee > /dev/null %
 
 " Remap Enter in normal mode
 
@@ -307,24 +324,51 @@ nmap <c-cr> o<Esc>0c$<Esc>k
 nmap <s-cr> O<Esc>0c$<Esc>j
 
 
-" Buffer movement
+" --- Remappings:
 
-" buffer switcher
-" notice set wildmode=full is recommended to complete buffernames with this
-" bind
-nnoremap <leader>bb :buffers<CR>:buffer<Space>
+" Open help for word under cursor
+map <F1> <ESC>:exec "help ".expand("<cword>")<CR>
 
-" move to next or previous buffer with ALT+hl
-nmap <m-h> :bp<cr>
-nmap <m-l> :bn<cr>
+map <Space> /
 
-" quickfix reuses open windows
-set switchbuf=useopen
+" while wrapping lines move screen-linewise
+nnoremap <buffer> k gk
+nnoremap <buffer> j gj
 
+" Nice Indentation by Shift-h/l
+nmap < <<
+nmap > >>
+vmap < <gv
+vmap > >gv
+
+" allow command line editing like emacs
+cnoremap <C-A>      <Home>
+cnoremap <C-B>      <Left>
+cnoremap <C-E>      <End>
+cnoremap <C-F>      <Right>
+cnoremap <C-N>      <End>
+cnoremap <C-P>      <Up>
+
+" remap Y to behave like C or D...
+map Y y$
+
+" faster viewport moving
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
+
+" jump to line AND column
+nnoremap ' `
+nnoremap ` '
+
+" center match
+map n nzz
+map N Nzz
 
 " disable search highlighting till next search
 nnoremap <silent> <leader>h :noh<CR><C-l>
 
+" Remap gf to open a new split for the file under cursor
+map gf <C-W>f
 
 " Window movement
 noremap <silent> <c-l> <c-w>l
@@ -332,11 +376,9 @@ noremap <silent> <c-j> <c-w>j
 noremap <silent> <c-k> <c-w>k
 noremap <silent> <c-h> <c-w>h
 
-" remap Y to behave like C or D...
-map Y y$
 
-" FILE OPERATIONS
-"
+" --- File mappings
+
 " Edit the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>:so ~/.gvimrc<cr>
@@ -349,56 +391,22 @@ imap <c-s> <esc>:w<cr>a
 map <m-q> <esc>:w<bar>:BD<cr>
 map <c-q> <esc>:BD<cr>
 
+" nice buffer switching
+" notice enabling wildmode is recommended to complete buffernames with this
+nnoremap <leader>bb :ls<cr>:b<space>
 
-" MANIPULATING movement
-
-" Nice Indentation by Shift-h/l
-nmap < <<
-nmap > >>
-vmap < <gv
-vmap > >gv
-
-
-" Toggle Wrapping
-nmap <leader>w :call ToggleWrap()<CR>
-function! ToggleWrap()
-  if &wrap
-    call DisableDisplayWrapping()
-  else
-    call EnableDisplayWrapping()
-  endif
-endfunction
-
-function! EnableDisplayWrapping()
-  if !&wrap
-    setlocal wrap
-    " don't skip wrapped lines
-    nnoremap <buffer> k gk
-    nnoremap <buffer> j gj
-    inoremap <buffer> <Up> <C-O>gk
-    inoremap <buffer> <Down> <C-O>gj
-  endif
-endfunction
-
-function! DisableDisplayWrapping()
+" move to next or previous buffer with ALT+hl
+nmap <m-h> :bp<cr>
+nmap <m-l> :bn<cr>
 
 
-  if &wrap
-    setlocal nowrap
-    nunmap <buffer> k
-    nunmap <buffer> j
-    iunmap <buffer> <Up>
-    iunmap <buffer> <Down>
-  endif
-endfunction
+" ##### PLUGIN MAPPINGS
 
-
-" PLUGIN MAPPING
 
 map <silent> <leader>a :exec "Ack ".expand("<cword>")<cr>
 
 " exchange ~/django with path to your project
-"map <leader>fj cd ~/django/todo<cr>:FufCoverageFile<cr>
+"map <leader>fj :cd ~/django<cr>:FufCoverageFile<cr>
 map <leader>fj :FufCoverageFile<cr>
 map <leader>ff :FufFile<cr>
 map <leader>fc :FufFileWithCurrentBufferDir<cr>
@@ -408,7 +416,6 @@ map <leader>fd :FufDir<cr>
 map <leader>ft :FufTag<cr>
 map <leader>fa :FufBufferTagAll<cr>
 
-let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', ]
 
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
@@ -422,48 +429,13 @@ nnoremap <silent> <F2> :TagbarToggle<CR>
 
 map <F3> :NERDTreeToggle<CR>
 
-" PLUGIN SETTINGS
-
-let g:buftabs_only_basename=1
-let g:buftabs_separator=' '
-let g:tagbar_autoclose = 1
-
-let g:tagbar_width = 30
-
-let g:tagbar_ctags_bin='/usr/bin/ctags'
-
-let g:SuperTabDefaultCompletionType = "context"
-
 nnoremap <silent> <Leader>sy :YRShow<CR>
 
-"quickfix window toggle
 
-function! GetBufferList()
-  redir =>buflist
-  silent! ls
-  redir END
-  return buflist
-endfunction
 
-function! ToggleList(bufname, pfx)
-  let buflist = GetBufferList()
-  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-    if bufwinnr(bufnum) != -1
-      exec(a:pfx.'close')
-      return
-    endif
-  endfor
-  if a:pfx == 'l' && len(getloclist(0)) == 0
-      echohl ErrorMsg
-      echo "Location List is Empty."
-      return
-  endif
-  let winnr = winnr()
-  exec(a:pfx.'open')
-  if winnr() != winnr
-    wincmd p
-  endif
-endfunction
+" ##### AUTOCMDS
+
+
 
 autocmd FileType html set filetype=htmldjango.html
 autocmd FileType python set ft=python.django
@@ -475,4 +447,3 @@ let python_highlight_exceptions=0
 let python_highlight_builtins=0
 autocmd FileType html,xhtml,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd Filetype java setlocal errorformat=%A%f:%l:\ %m,%-Z%p^,%Csymbol\ \ :\ %m,%-C%.%#
-
