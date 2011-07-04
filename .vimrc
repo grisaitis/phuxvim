@@ -6,7 +6,6 @@
 " last update: 04.07.11
 
 
-
 " ##### OPTIONS
 
 
@@ -60,9 +59,9 @@ set clipboard+=unnamed
 set clipboard+=+
 
 " got scrolling options? uncomment this
-"set ttyfast
-"set ttyscroll=3 " speed
-"set lazyredraw " to avoid scrolling problems
+set ttyfast
+set ttyscroll=3 " speed
+set lazyredraw " to avoid scrolling problems
 
 " show stuff at the left if not wrapping
 set sidescrolloff=5
@@ -163,20 +162,23 @@ set t_Co=256
 
 " --- Statusline Options
 set statusline= "clear it first
-set statusline+=%n:		" - buffer number, followed by a colon
-set statusline+=%<%f		" - relative filename, truncated from the left
-set statusline+=\ 		" - a space
-set statusline+=%h		" - [Help] if this is a help buffer
-set statusline+=%m		" - [+] if modified, [-] if not modifiable
-set statusline+=%r		" - [RO] if readonly
-set statusline+=\ 		" - a space
-set statusline+=\ 		" - a space
-set statusline+=%=		" - right-align the rest
-set statusline+=%-10.(%l,%c%V%) " - line,column[-virtual column]
-set statusline+=\ 		" - a space
-set statusline+=%4L		" - total number of lines in buffer
-set statusline+=\ 		" - a space
-set statusline+=%P		" - position in buffer as percentage
+"set statusline+=%n:		" - buffer number, followed by a colon
+"set statusline+=%<%f		" - relative filename, truncated from the left
+"set statusline+=\ 		" - a space
+"set statusline+=%h		" - [Help] if this is a help buffer
+"set statusline+=%m		" - [+] if modified, [-] if not modifiable
+"set statusline+=%r		" - [RO] if readonly
+"set statusline+=\ 		" - a space
+"set statusline+=\ 		" - a space
+"set statusline+=%=		" - right-align the rest
+"set statusline+=%-10.(%l,%c%V%) " - line,column[-virtual column]
+"set statusline+=\ 		" - a space
+"set statusline+=%4L		" - total number of lines in buffer
+"set statusline+=\ 		" - a space
+"set statusline+=%P		" - position in buffer as percentage
+"set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+" tim popes statusline
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
 
 " Always display the status line, even if only one window is displayed
 set laststatus=2
@@ -376,6 +378,9 @@ noremap <silent> <c-j> <c-w>j
 noremap <silent> <c-k> <c-w>k
 noremap <silent> <c-h> <c-w>h
 
+" cicle through windows with ctrl tab
+noremap <C-TAB>   <C-W>w
+noremap <C-S-TAB> <C-W>W
 
 " --- File mappings
 
@@ -387,9 +392,10 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>:so ~/.gvimrc<cr>
 map <c-s> <esc>:w<cr>
 imap <c-s> <esc>:w<cr>a
 
-" write & close buffer with alt+q but dont close window
-map <m-q> <esc>:w<bar>:BD<cr>
-map <c-q> <esc>:BD<cr>
+" quit buffer and window with alt+q
+map <m-q> :bd<cr>
+" quit buffer but keep window with ctrl+q
+map <c-q> :BD<cr>
 
 " nice buffer switching
 " notice enabling wildmode is recommended to complete buffernames with this
@@ -402,6 +408,10 @@ nmap <m-l> :bn<cr>
 
 " ##### PLUGIN MAPPINGS
 
+nmap <silent> <Leader>o :CommandT<CR>
+nmap <silent> <Leader>i :CommandTBuffer<CR>
+
+map <leader>mb :TMiniBufExplorer<cr>
 
 map <silent> <leader>a :exec "Ack ".expand("<cword>")<cr>
 
@@ -411,7 +421,6 @@ map <leader>fj :FufCoverageFile<cr>
 map <leader>ff :FufFile<cr>
 map <leader>fc :FufFileWithCurrentBufferDir<cr>
 map <leader>fh :FufHelp<cr>
-map <leader>fb :FufBuffer<cr>
 map <leader>fd :FufDir<cr>
 map <leader>ft :FufTag<cr>
 map <leader>fa :FufBufferTagAll<cr>
