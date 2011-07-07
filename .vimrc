@@ -97,6 +97,9 @@ set viminfo='50,\"100,:100,n~/.viminfo
 " History options
 set history=1000  " Number of things to remember in history.
 
+" persistent Undo FTW
+set undofile
+set undodir=~/.undofilesvim
 
 
 " ##### VISUAL
@@ -133,7 +136,7 @@ set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
 
 " shorten messages + no welcome screen at startup; see :h shortmess for more
 " info
-set shortmess=atI
+set shortmess=atIoOTts
 
 " Enable syntax highlighting
 syntax on
@@ -151,7 +154,7 @@ set cul
 
 " --- Color Options
 if has("gui_running")
-    colorscheme zmrok
+    colorscheme molokai
 else
     colorscheme xterm16
 endif
@@ -177,6 +180,7 @@ set statusline= "clear it first
 "set statusline+=\ 		" - a space
 "set statusline+=%P		" - position in buffer as percentage
 "set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+
 " tim popes statusline
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
 
@@ -299,11 +303,15 @@ let mapleader=","
 inoremap kj <esc>
 inoremap jk <esc>
 
+" map j to gj and k to gk, so line navigation ignores line wrap
+nmap j gj
+nmap k gk
+
 " delete char after cursor in insert mode, same as del key
 inoremap <c-d> <c-o>x
 
 " cd to current buffer's cwd, disabled because of ack, fuzzy and commandt
-"map <leader>cd :cd %:p:h<CR>:pwd<CR>
+map <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " Copy Paste
 map <leader>p "+p
