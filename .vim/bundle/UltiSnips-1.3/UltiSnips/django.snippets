@@ -14,7 +14,7 @@ snippet comma
 ${1:FIELDNAME} = models.CommaSeparatedIntegerField(max_length=${2}${3:, blank=True})
 endsnippet
 
-snippet date
+snippet datem "datefield model"
 ${1:FIELDNAME} = models.DateField(${2:auto_now_add=True, auto_now=True}${3:, blank=True, null=True})
 endsnippet
 
@@ -108,21 +108,18 @@ endsnippet
 
 snippet form
 class ${1:FormName}(forms.Form):
-        """${2:docstring}"""
-        ${3}
+    ${2}
 
 endsnippet
 
 snippet model
 class ${1:ModelName}(models.Model):
-        """${2:docstring}"""
-        ${3}
-
+    ${2}
 endsnippet
 
 snippet modeladmin
 class ${1:ModelName}Admin(admin.ModelAdmin):
-        ${2}
+    ${2}
 
 admin.site.register($1, $1Admin)
 
@@ -130,21 +127,21 @@ endsnippet
 
 snippet r2r
 return render_to_response('${1:template.html}', {
-                ${2}
-        }${3:, context_instance=RequestContext(request)}
+    ${2}
+}${3:, context_instance=RequestContext(request)}
 )
 
 endsnippet
 
 snippet tabularinline
 class ${1:ModelName}Inline(admin.TabularInline):
-        model = $1
-        extra = ${2:3}
+    model = $1
+    extra = ${2:3}
 
 endsnippet
 
 snippet stackedinline
 class ${1:ModelName}Inline(admin.StackedInline):
-        model = $1
-        extra = ${2:3}
+    model = $1
+    extra = ${2:3}
 endsnippet

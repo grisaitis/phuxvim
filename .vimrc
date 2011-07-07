@@ -59,29 +59,29 @@ set clipboard+=unnamed
 set clipboard+=+
 
 " got scrolling options? uncomment this
-set ttyfast
-set ttyscroll=3 " speed
-set lazyredraw " to avoid scrolling problems
+"set ttyfast
+"set ttyscroll=3 " speed
+"set lazyredraw " to avoid scrolling problems
 
 " show stuff at the left if not wrapping
 set sidescrolloff=5
 set sidescroll=1
 
-" keep cursor distanced 5 lines till window ends
+" keep cursor distanced 3 lines till window ends
 set scrolloff=3
 
 " jump to last cursor position when opening files
-function! ResCur()
-  if line("'\"") <= line("$")
-    normal! g`"
-    return 1
-  endif
-endfunction
+"function! ResCur()
+  "if line("'\"") <= line("$")
+    "normal! g`"
+    "return 1
+  "endif
+"endfunction
 
-augroup resCur
-  autocmd!
-  autocmd BufWinEnter * call ResCur()
-augroup END
+"augroup resCur
+  "autocmd!
+  "autocmd BufWinEnter * call ResCur()
+"augroup END
 
 " --- History Options
 
@@ -113,8 +113,9 @@ set showmode
 set showcmd
 
 " show matching bracket
-set showmatch
-set matchtime=2 " how many tenths of a second to blink matching brackets for
+" disabled to increase performance
+"set showmatch
+"set matchtime=2 " how many tenths of a second to blink matching brackets for
 
 " Line wrapping off
 set nowrap
@@ -149,12 +150,10 @@ set visualbell t_vb=
 
 "cursors dont blink!
 set gcr=a:blinkwait0
-" cursor line
-set cul
 
 " --- Color Options
 if has("gui_running")
-    colorscheme molokai
+    colorscheme zmrok
 else
     colorscheme xterm16
 endif
@@ -165,24 +164,24 @@ set t_Co=256
 
 " --- Statusline Options
 set statusline= "clear it first
-"set statusline+=%n:		" - buffer number, followed by a colon
-"set statusline+=%<%f		" - relative filename, truncated from the left
-"set statusline+=\ 		" - a space
-"set statusline+=%h		" - [Help] if this is a help buffer
-"set statusline+=%m		" - [+] if modified, [-] if not modifiable
-"set statusline+=%r		" - [RO] if readonly
-"set statusline+=\ 		" - a space
-"set statusline+=\ 		" - a space
-"set statusline+=%=		" - right-align the rest
-"set statusline+=%-10.(%l,%c%V%) " - line,column[-virtual column]
-"set statusline+=\ 		" - a space
-"set statusline+=%4L		" - total number of lines in buffer
-"set statusline+=\ 		" - a space
-"set statusline+=%P		" - position in buffer as percentage
-"set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+set statusline+=%n:		" - buffer number, followed by a colon
+set statusline+=%<%f		" - relative filename, truncated from the left
+set statusline+=\ 		" - a space
+set statusline+=%h		" - [Help] if this is a help buffer
+set statusline+=%m		" - [+] if modified, [-] if not modifiable
+set statusline+=%r		" - [RO] if readonly
+set statusline+=\ 		" - a space
+set statusline+=\ 		" - a space
+set statusline+=%=		" - right-align the rest
+set statusline+=%-10.(%l,%c%V%) " - line,column[-virtual column]
+set statusline+=\ 		" - a space
+set statusline+=%4L		" - total number of lines in buffer
+set statusline+=\ 		" - a space
+set statusline+=%P		" - position in buffer as percentage
+set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
 
 " tim popes statusline
-set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
+"set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
 
 " Always display the status line, even if only one window is displayed
 set laststatus=2
@@ -247,8 +246,8 @@ set backspace=indent,eol,start
 
 " --- Search Options
 
-" Highlight searches
-set hlsearch
+" Highlight searches, but after a search
+noh
 
 " Use case insensitive search, except when using capital letters
 set ignorecase
@@ -276,17 +275,11 @@ set completeopt=menu,longest,preview
 
 " ##### PLUGIN SETTINGS
 
-
-
-let g:tagbar_autoclose = 1
-
-let g:tagbar_width = 30
-
-let g:tagbar_ctags_bin='/usr/bin/ctags'
+:let g:buftabs_only_basename=1
 
 let g:SuperTabDefaultCompletionType = "context"
 
-let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', ]
+let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', 'bookmarkfile', 'bookmarkfileadd', 'bookmarkfileaddasselectedtext', 'bookmarkdir', 'bookmarkdiradd', 'filewithfullcwd', 'coveragefilechange', 'coveragefigeregister', 'dirwithcurrentbufferdir', 'buffertagwithselectedtext', 'buffertagwithcursorword']
 
 
 
@@ -341,10 +334,6 @@ map <F1> <ESC>:exec "help ".expand("<cword>")<CR>
 
 map <Space> /
 
-" while wrapping lines move screen-linewise
-nnoremap <buffer> k gk
-nnoremap <buffer> j gj
-
 " Nice Indentation by Shift-h/l
 nmap < <<
 nmap > >>
@@ -390,6 +379,9 @@ noremap <silent> <c-h> <c-w>h
 noremap <C-TAB>   <C-W>w
 noremap <C-S-TAB> <C-W>W
 
+map <leader>m :marks<cr>
+map <leader>j :jumps<cr>
+
 " --- File mappings
 
 " Edit the vimrc file
@@ -407,7 +399,7 @@ map <c-q> :BD<cr>
 
 " nice buffer switching
 " notice enabling wildmode is recommended to complete buffernames with this
-nnoremap <leader>bb :ls<cr>:b<space>
+nnoremap <leader>lb :ls<cr>:b<space>
 
 " move to next or previous buffer with ALT+hl
 nmap <m-h> :bp<cr>
@@ -416,22 +408,20 @@ nmap <m-l> :bn<cr>
 
 " ##### PLUGIN MAPPINGS
 
-nmap <silent> <Leader>o :CommandT<CR>
-nmap <silent> <Leader>i :CommandTBuffer<CR>
-
-map <leader>mb :TMiniBufExplorer<cr>
+nmap <silent> <Leader>u :GundoToggle<cr>
 
 map <silent> <leader>a :exec "Ack ".expand("<cword>")<cr>
 
 " exchange ~/django with path to your project
 "map <leader>fj :cd ~/django<cr>:FufCoverageFile<cr>
-map <leader>fj :FufCoverageFile<cr>
-map <leader>ff :FufFile<cr>
+map <leader>i :FufCoverageFile<cr>
+map <leader>o :FufFile<cr>
 map <leader>fc :FufFileWithCurrentBufferDir<cr>
-map <leader>fh :FufHelp<cr>
-map <leader>fd :FufDir<cr>
-map <leader>ft :FufTag<cr>
+map <leader>d :FufDir<cr>
+map <leader>fd :FufDirWithFullCwd<cr>
+map <leader>t :FufTag<cr>
 map <leader>fa :FufBufferTagAll<cr>
+map <leader>bb :FufBuffer<cr>
 
 
 let g:UltiSnipsExpandTrigger="<c-l>"
@@ -440,9 +430,10 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 let g:pyref_mapping = 'K'
 
-map <leader>mr :Mru<cr>
+map <leader>r :Mru<cr>
 
-nnoremap <silent> <F2> :TagbarToggle<CR>
+nnoremap <silent> <F2> :colorscheme codeburn<CR>
+nnoremap <silent> <s-F2> :colorscheme molokai<CR>
 
 map <F3> :NERDTreeToggle<CR>
 
@@ -462,5 +453,4 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 let python_highlight_all=1
 let python_highlight_exceptions=0
 let python_highlight_builtins=0
-autocmd FileType html,xhtml,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
-autocmd Filetype java setlocal errorformat=%A%f:%l:\ %m,%-Z%p^,%Csymbol\ \ :\ %m,%-C%.%#
+autocmd FileType html,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
