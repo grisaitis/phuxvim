@@ -25,15 +25,16 @@ set nocompatible
 set hidden
 
 " Backup options
-set backupdir=~/tmp
-set dir=~/tmp
+" not needed cause :w<cr> or c-s became native after every change
+"set backupdir=~/tmp
+"set dir=~/tmp
 
 
 " Needed on some linux distros.
 " see http://www.adamlowe.me/2009/12/vim-destroys-all-other-rails-editors.html
 filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+call pathogen#infect()
+"call pathogen#runtime_append_all_bundles()
 filetype indent plugin on
 
 " automatically read file changed outside of Vim
@@ -50,9 +51,6 @@ set nomodeline
 
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
-
-" Accept macros within macros
-set remap
 
 " Copy to Clipboard (on Unix)
 set clipboard+=unnamed
@@ -106,9 +104,6 @@ set undodir=~/.undofilesvim
 
 
 
-" Explanation needed? :)
-set showmode
-
 " Show partial commands in the last line of the screen
 set showcmd
 
@@ -122,7 +117,9 @@ set nowrap
 " but don't split words
 set lbr
 
-" Set the command window height to 2 lines
+set textwidth=79
+
+" Set the command window height to 1 lines
 set cmdheight=1
 
 " This makes more sense than the default of 1
@@ -153,13 +150,10 @@ set gcr=a:blinkwait0
 
 " --- Color Options
 if has("gui_running")
-    colorscheme zmrok
+    colorscheme Mustang
 else
-    colorscheme xterm16
+    colorscheme slate
 endif
-
-" set Vim to 256 colors:
-set t_Co=256
 
 
 " --- Statusline Options
@@ -196,7 +190,6 @@ set laststatus=2
 " contents.  Use this to allow intelligent auto-indenting for each filetype,
 " and for plugins that are filetype specific.
 set autoindent
-set smartindent
 
 " same (Spaces feel like Tabs)
 set softtabstop=4
@@ -232,9 +225,6 @@ set whichwrap+=<,>,[,],h,l
 " add < > to chars that form pairs (see % command)
 set matchpairs+=<:>
 
-" Enable error files & error jumping
-set cf
-
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
 " coming from other editors would expect.
@@ -246,8 +236,8 @@ set backspace=indent,eol,start
 
 " --- Search Options
 
-" Highlight searches, but after a search
-noh
+" Highlight searches
+set hlsearch
 
 " Use case insensitive search, except when using capital letters
 set ignorecase
@@ -305,6 +295,7 @@ inoremap <c-d> <c-o>x
 
 " cd to current buffer's cwd, disabled because of ack, fuzzy and commandt
 map <leader>cd :cd %:p:h<CR>:pwd<CR>
+map <leader>; :b#<cr>
 
 " Copy Paste
 map <leader>p "+p
@@ -325,6 +316,10 @@ nmap <c-cr> o<Esc>0c$<Esc>k
 
 " Stay at this line and insert a new line above with Shift Enter
 nmap <s-cr> O<Esc>0c$<Esc>j
+
+" Use Q for formatting the current paragraph (or selection)
+vmap Q gq
+nmap Q gqap
 
 
 " --- Remappings:
@@ -375,12 +370,19 @@ noremap <silent> <c-j> <c-w>j
 noremap <silent> <c-k> <c-w>k
 noremap <silent> <c-h> <c-w>h
 
+" Window resizing mappings
+map <up> <C-W>+
+map <down> <C-W>-
+map <left> <c-w><
+map <right> <c-w>>
+
 " cicle through windows with ctrl tab
 noremap <C-TAB>   <C-W>w
 noremap <C-S-TAB> <C-W>W
 
 map <leader>m :marks<cr>
 map <leader>j :jumps<cr>
+
 
 " --- File mappings
 
