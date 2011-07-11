@@ -24,7 +24,7 @@ hi VertSplit 	guifg=#202020 guibg=#202020 gui=none
 if version >= 700
     hi CursorLine     guibg=#0d0d0d
     hi CursorColumn   guibg=#0d0d0d
-    hi MatchParen     guifg=Black      guibg=magenta gui=bold
+    hi MatchParen     guifg=magenta guibg=NONE      gui=bold
 
     hi SpecialKey    guifg=red
 

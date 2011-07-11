@@ -2,7 +2,7 @@
 " Reassert that no flash or beep is wanted.
 set visualbell t_vb=
 
-set guifont=DejaVu\ Sans\ Mono\ 9
+set guifont=DejaVu\ Sans\ Mono\ 10
 
 " no GUI
 set guioptions-=l "left scrollbar

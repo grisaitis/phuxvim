@@ -150,7 +150,7 @@ set gcr=a:blinkwait0
 
 " --- Color Options
 if has("gui_running")
-    colorscheme Mustang
+    colorscheme zmrok
 else
     colorscheme slate
 endif
@@ -265,9 +265,11 @@ set completeopt=menu,longest,preview
 
 " ##### PLUGIN SETTINGS
 
-:let g:buftabs_only_basename=1
+let g:tagbar_ctags_bin = '/usr/bin/ctags'
 
-let g:SuperTabDefaultCompletionType = "context"
+let g:tagbar_width = 30
+
+:let g:buftabs_only_basename=1
 
 let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', 'bookmarkfile', 'bookmarkfileadd', 'bookmarkfileaddasselectedtext', 'bookmarkdir', 'bookmarkdiradd', 'filewithfullcwd', 'coveragefilechange', 'coveragefigeregister', 'dirwithcurrentbufferdir', 'buffertagwithselectedtext', 'buffertagwithcursorword']
 
@@ -291,7 +293,7 @@ nmap j gj
 nmap k gk
 
 " delete char after cursor in insert mode, same as del key
-inoremap <c-d> <c-o>x
+inoremap <c-d> <del>
 
 " cd to current buffer's cwd, disabled because of ack, fuzzy and commandt
 map <leader>cd :cd %:p:h<CR>:pwd<CR>
@@ -408,7 +410,12 @@ nmap <m-h> :bp<cr>
 nmap <m-l> :bn<cr>
 
 
+
 " ##### PLUGIN MAPPINGS
+
+
+
+nnoremap <silent> <F4> :TagbarToggle<cr>
 
 nmap <silent> <Leader>u :GundoToggle<cr>
 
@@ -456,3 +463,13 @@ let python_highlight_all=1
 let python_highlight_exceptions=0
 let python_highlight_builtins=0
 autocmd FileType html,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
+
+" Show syntax highlighting groups for word under cursor
+nmap <C-S-P> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
