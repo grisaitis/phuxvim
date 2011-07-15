@@ -126,7 +126,7 @@ set cmdheight=1
 set winminheight=0
 
 " quickfix reuses open windows
-set switchbuf=useopen
+set switchbuf=useopen,usetab
 
 " set charracters for whitespaces, etc..
 set list
@@ -145,12 +145,14 @@ set visualbell t_vb=
 
 " --- Cursor Options
 
+set cul
+
 "cursors dont blink!
 set gcr=a:blinkwait0
 
 " --- Color Options
 if has("gui_running")
-    colorscheme zmrok
+    colorscheme Mustang
 else
     colorscheme slate
 endif
@@ -158,24 +160,9 @@ endif
 
 " --- Statusline Options
 set statusline= "clear it first
-set statusline+=%n:		" - buffer number, followed by a colon
-set statusline+=%<%f		" - relative filename, truncated from the left
-set statusline+=\ 		" - a space
-set statusline+=%h		" - [Help] if this is a help buffer
-set statusline+=%m		" - [+] if modified, [-] if not modifiable
-set statusline+=%r		" - [RO] if readonly
-set statusline+=\ 		" - a space
-set statusline+=\ 		" - a space
-set statusline+=%=		" - right-align the rest
-set statusline+=%-10.(%l,%c%V%) " - line,column[-virtual column]
-set statusline+=\ 		" - a space
-set statusline+=%4L		" - total number of lines in buffer
-set statusline+=\ 		" - a space
-set statusline+=%P		" - position in buffer as percentage
-set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
 
 " tim popes statusline
-"set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
 
 " Always display the status line, even if only one window is displayed
 set laststatus=2
@@ -190,6 +177,7 @@ set laststatus=2
 " contents.  Use this to allow intelligent auto-indenting for each filetype,
 " and for plugins that are filetype specific.
 set autoindent
+set smartindent
 
 " same (Spaces feel like Tabs)
 set softtabstop=4
@@ -293,7 +281,7 @@ nmap j gj
 nmap k gk
 
 " delete char after cursor in insert mode, same as del key
-inoremap <c-d> <del>
+inoremap <c-l> <del>
 
 " cd to current buffer's cwd, disabled because of ack, fuzzy and commandt
 map <leader>cd :cd %:p:h<CR>:pwd<CR>
@@ -311,6 +299,9 @@ map <leader>w :set nowrap!<CR>
 " Enables you to save files with :w!! by using sudo if you forgot to open it as root
 cmap w!! %!sudo tee > /dev/null %
 
+" Remap Enter in insert mode
+inoremap <c-cr> <c-o>O
+
 " Remap Enter in normal mode
 
 " Stay at the old line with STRG Enter
@@ -323,6 +314,9 @@ nmap <s-cr> O<Esc>0c$<Esc>j
 vmap Q gq
 nmap Q gqap
 
+" warp speed auto-complete
+" map ';;' to trigger auto-completion in insert mode
+imap ;; <C-p>
 
 " --- Remappings:
 
@@ -347,10 +341,6 @@ cnoremap <C-P>      <Up>
 
 " remap Y to behave like C or D...
 map Y y$
-
-" faster viewport moving
-nnoremap <C-e> 3<C-e>
-nnoremap <C-y> 3<C-y>
 
 " jump to line AND column
 nnoremap ' `
@@ -385,7 +375,17 @@ noremap <C-S-TAB> <C-W>W
 map <leader>m :marks<cr>
 map <leader>j :jumps<cr>
 
-
+" tabbing
+nmap <leader>t :tabnew<cr>
+map <c-1> :tabnext 1 <cr>
+map <c-2> :tabnext 2 <cr>
+map <c-3> :tabnext 3 <cr>
+map <c-4> :tabnext 4 <cr>
+map <c-5> :tabnext 5 <cr>
+map <c-6> :tabnext 6 <cr>
+map <c-7> :tabnext 7 <cr>
+map <c-8> :tabnext 8 <cr>
+map <c-9> :tabnext 9 <cr>
 " --- File mappings
 
 " Edit the vimrc file
@@ -419,34 +419,26 @@ nnoremap <silent> <F4> :TagbarToggle<cr>
 
 nmap <silent> <Leader>u :GundoToggle<cr>
 
-map <silent> <leader>a :exec "Ack ".expand("<cword>")<cr>
+map <silent> <leader>aw :exec "Ack ".expand("<cword>")<cr>
+map <leader>ac :Ack 
 
-" exchange ~/django with path to your project
-"map <leader>fj :cd ~/django<cr>:FufCoverageFile<cr>
-map <leader>i :FufCoverageFile<cr>
-map <leader>o :FufFile<cr>
-map <leader>fc :FufFileWithCurrentBufferDir<cr>
-map <leader>d :FufDir<cr>
-map <leader>fd :FufDirWithFullCwd<cr>
-map <leader>t :FufTag<cr>
-map <leader>fa :FufBufferTagAll<cr>
-map <leader>bb :FufBuffer<cr>
+map <leader>f :FufCoverageFile<cr>
+map <leader>g :FufFileWithFullCwd<cr>
+map <leader>o :FufFileWithCurrentBufferDir<cr>
+map <leader>d :FufDirWithFullCwd<cr>
+map <leader>i :FufBuffer<cr>
 
-
-let g:UltiSnipsExpandTrigger="<c-l>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 let g:pyref_mapping = 'K'
 
 map <leader>r :Mru<cr>
 
 nnoremap <silent> <F2> :colorscheme codeburn<CR>
-nnoremap <silent> <s-F2> :colorscheme molokai<CR>
+nnoremap <silent> <s-F2> :colorscheme Mustang<CR>
 
 map <F3> :NERDTreeToggle<CR>
 
-nnoremap <silent> <Leader>sy :YRShow<CR>
+noremap <silent> <Leader>z :YRShow<CR>
 
 
 
@@ -463,6 +455,13 @@ let python_highlight_all=1
 let python_highlight_exceptions=0
 let python_highlight_builtins=0
 autocmd FileType html,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd FileType python set complete+=k~/.vim/syntax/python.vim isk+=.,_
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+
+
 
 " Show syntax highlighting groups for word under cursor
 nmap <C-S-P> :call <SID>SynStack()<CR>
