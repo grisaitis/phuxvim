@@ -57,9 +57,9 @@ set clipboard+=unnamed
 set clipboard+=+
 
 " got scrolling options? uncomment this
-"set ttyfast
-"set ttyscroll=3 " speed
-"set lazyredraw " to avoid scrolling problems
+set ttyfast
+set ttyscroll=3 " speed
+set lazyredraw " to avoid scrolling problems
 
 " show stuff at the left if not wrapping
 set sidescrolloff=5
@@ -69,17 +69,17 @@ set sidescroll=1
 set scrolloff=3
 
 " jump to last cursor position when opening files
-"function! ResCur()
-  "if line("'\"") <= line("$")
-    "normal! g`"
-    "return 1
-  "endif
-"endfunction
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
 
-"augroup resCur
-  "autocmd!
-  "autocmd BufWinEnter * call ResCur()
-"augroup END
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
 
 " --- History Options
 
@@ -243,7 +243,7 @@ set incsearch
 " Better command-line completion
 set wildmenu
 set wildignore+=*.pyc,*.zip,*.gz,*.bz,*.tar,*.jpg,*.png,*.gif,*.avi,*.wmv,*.ogg,*.mp3,*.mov
-set wildmode=list:longest
+set wildmode=longest:list
 
 " Completion settings in insertmode
 set complete=.,w,b,t,i
@@ -314,16 +314,20 @@ nmap <s-cr> O<Esc>0c$<Esc>j
 vmap Q gq
 nmap Q gqap
 
-" warp speed auto-complete
-" map ';;' to trigger auto-completion in insert mode
-imap ;; <C-p>
+" fast closing of html tags
+imap ;; </<c-x><c-o>
+
+" reload edited file
+map <silent> <F5> :e!<CR>
+
 
 " --- Remappings:
 
 " Open help for word under cursor
 map <F1> <ESC>:exec "help ".expand("<cword>")<CR>
 
-map <Space> /
+map <Space> <c-d>
+map <s-Space> <c-u>
 
 " Nice Indentation by Shift-h/l
 nmap < <<
@@ -363,10 +367,10 @@ noremap <silent> <c-k> <c-w>k
 noremap <silent> <c-h> <c-w>h
 
 " Window resizing mappings
-map <up> <C-W>+
-map <down> <C-W>-
-map <left> <c-w><
-map <right> <c-w>>
+map - <C-W>-
+map + <C-W>+
+map <c-left> <c-w><
+map <c-right> <c-w>>
 
 " cicle through windows with ctrl tab
 noremap <C-TAB>   <C-W>w
@@ -377,15 +381,7 @@ map <leader>j :jumps<cr>
 
 " tabbing
 nmap <leader>t :tabnew<cr>
-map <c-1> :tabnext 1 <cr>
-map <c-2> :tabnext 2 <cr>
-map <c-3> :tabnext 3 <cr>
-map <c-4> :tabnext 4 <cr>
-map <c-5> :tabnext 5 <cr>
-map <c-6> :tabnext 6 <cr>
-map <c-7> :tabnext 7 <cr>
-map <c-8> :tabnext 8 <cr>
-map <c-9> :tabnext 9 <cr>
+
 " --- File mappings
 
 " Edit the vimrc file
@@ -414,6 +410,7 @@ nmap <m-l> :bn<cr>
 " ##### PLUGIN MAPPINGS
 
 
+let g:sparkupNextMapping = '<c-j>'
 
 nnoremap <silent> <F4> :TagbarToggle<cr>
 
@@ -471,4 +468,4 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-
+au Filetype html,xml,xsl source ~/.vim/bundle/closetag/scripts/closetag.vim
