@@ -128,7 +128,7 @@ endfunction
 call s:defineOption('g:acp_enableAtStartup', 1)
 call s:defineOption('g:acp_mappingDriven', 0)
 call s:defineOption('g:acp_ignorecaseOption', 1)
-call s:defineOption('g:acp_completeOption', '.,w,b,t,i')
+call s:defineOption('g:acp_completeOption', '.,w,b,i')
 call s:defineOption('g:acp_completeoptPreview', 0)
 call s:defineOption('g:acp_behaviorUserDefinedFunction', '')
 call s:defineOption('g:acp_behaviorUserDefinedMeets', '')

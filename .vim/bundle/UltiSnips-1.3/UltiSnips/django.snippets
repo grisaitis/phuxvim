@@ -1,0 +1,155 @@
+snippet auto
+${1:FIELDNAME} = models.AutoField()
+endsnippet
+
+snippet bool
+${1:FIELDNAME} = models.BooleanField(${2:default=${3:True}})
+endsnippet
+
+snippet char
+${1:FIELDNAME} = models.CharField(max_length=${2}${3:, blank=True})
+endsnippet
+
+snippet comma
+${1:FIELDNAME} = models.CommaSeparatedIntegerField(max_length=${2}${3:, blank=True})
+endsnippet
+
+snippet datem "datefield model"
+${1:FIELDNAME} = models.DateField(${2:auto_now_add=True}${3:, auto_now=True}${4:, blank=True, null=True})
+endsnippet
+
+snippet datetime
+${1:FIELDNAME} = models.DateTimeField(${2:auto_now_add=True}${3:,
+auto_now=True}${4:, blank=True}${5:, null=True})
+endsnippet
+
+snippet decimal
+${1:FIELDNAME} = models.DecimalField(max_digits=${2}, decimal_places=${3})
+endsnippet
+
+snippet email
+${1:FIELDNAME} = models.EmailField(max_length=${2:75}${3:, blank=True})
+endsnippet
+
+snippet file
+${1:FIELDNAME} = models.FileField(upload_to=${2:path/for/upload}${3:, max_length=100})
+endsnippet
+
+snippet filepath
+${1:FIELDNAME} = models.FilePathField(path=${2:"/abs/path/to/dir"}${3:, max_length=100}${4:, match="*.ext"}${5:, recursive=True}${6:, blank=True, })
+endsnippet
+
+snippet float
+${1:FIELDNAME} = models.FloatField()
+endsnippet
+
+snippet image
+${1:FIELDNAME} = models.ImageField(upload_to=${2:path/for/upload}${3:, height_field=height, width_field=width}${4:, max_length=100})
+endsnippet
+
+snippet int
+${1:FIELDNAME} = models.IntegerField()
+endsnippet
+
+snippet ip
+${1:FIELDNAME} = models.IPAddressField()
+endsnippet
+
+snippet nullbool
+${1:FIELDNAME} = models.NullBooleanField()
+endsnippet
+
+snippet posint
+${1:FIELDNAME} = models.PositiveIntegerField()
+endsnippet
+
+snippet possmallint
+${1:FIELDNAME} = models.PositiveSmallIntegerField()
+endsnippet
+
+snippet slug
+${1:FIELDNAME} = models.SlugField(max_length=${2:50}${3:, blank=True})
+endsnippet
+
+snippet smallint
+${1:FIELDNAME} = models.SmallIntegerField()
+endsnippet
+
+snippet text
+${1:FIELDNAME} = models.TextField(${2:blank=True})
+endsnippet
+
+snippet time
+${1:FIELDNAME} = models.TimeField(${2:auto_now_add=True}${3:, auto_now=True}${3:, blank=True, null=True})
+endsnippet
+
+snippet url
+${1:FIELDNAME} = models.URLField(${2:verify_exists=False}${3:, max_length=200}${4:, blank=True})
+endsnippet
+
+snippet xml
+${1:FIELDNAME} = models.XMLField(schema_path=${2:None}${3:, blank=True})
+# Relational Fields
+endsnippet
+
+snippet foreign
+${1:FIELDNAME} = models.ForeignKey(${2:OtherModel}${3:, related_name=''}${4:, limit_choices_to=}${5:, to_field=''})
+endsnippet
+
+snippet many
+${1:FIELDNAME} = models.ManyToManyField(${2:OtherModel}${3:, related_name=''}${4:, limit_choices_to=}${5:, symmetrical=False}${6:, through=''}${7:, db_table=''})
+endsnippet
+
+snippet one
+${1:FIELDNAME} = models.OneToOneField(${2:OtherModel}${3:, parent_link=True}${4:, related_name=''}${5:, limit_choices_to=}${6:, to_field=''})
+endsnippet
+
+# Code Skeletons
+
+snippet form
+class ${1:FormName}(forms.Form):
+    ${2}
+endsnippet
+
+snippet model
+class ${1:ModelName}(models.Model):
+    ${2}
+endsnippet
+
+snippet modeladmin
+class ${1:ModelName}Admin(admin.ModelAdmin):
+    ${2}
+
+admin.site.register($1, $1Admin)
+endsnippet
+
+snippet r2r
+return render_to_response('${1:template.html}', {${2}}${3:, context_instance=RequestContext(request)})
+endsnippet
+
+snippet hrr
+return HttpResponseRedirect('/${1:target}/')
+endsnippet
+
+snippet tabularinline
+class ${1:ModelName}Inline(admin.TabularInline):
+    model = $1
+    extra = ${2:3}
+endsnippet
+
+snippet stackedinline
+class ${1:ModelName}Inline(admin.StackedInline):
+    model = $1
+    extra = ${2:3}
+endsnippet
+
+
+snippet str
+def __str__(self):
+    return self.name
+endsnippet
+
+snippet meta
+class Meta:
+    ${1:ordering = ["${2:name}"]}
+endsnippet

@@ -28,6 +28,10 @@ set hidden
 " not needed cause :w<cr> or c-s became native after every change
 "set backupdir=~/tmp
 "set dir=~/tmp
+set nobackup
+set nowritebackup
+set noswapfile
+
 
 
 " Needed on some linux distros.
@@ -148,14 +152,15 @@ set visualbell t_vb=
 set cul
 
 "cursors dont blink!
-set gcr=a:blinkwait0
+"set gcr=a:blinkwait0
 
 " --- Color Options
 if has("gui_running")
-    colorscheme Mustang
+    colorscheme lanai
 else
     colorscheme slate
 endif
+
 
 
 " --- Statusline Options
@@ -252,6 +257,10 @@ set completeopt=menu,longest,preview
 
 
 " ##### PLUGIN SETTINGS
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 let g:tagbar_ctags_bin = '/usr/bin/ctags'
 
@@ -407,7 +416,9 @@ nmap <m-l> :bn<cr>
 
 
 
+
 " ##### PLUGIN MAPPINGS
+
 
 
 let g:sparkupNextMapping = '<c-j>'
@@ -430,9 +441,10 @@ let g:pyref_mapping = 'K'
 
 map <leader>r :Mru<cr>
 
-nnoremap <silent> <F2> :colorscheme codeburn<CR>
-nnoremap <silent> <s-F2> :colorscheme Mustang<CR>
-
+nnoremap <silent> <F6> :colorscheme proton<CR>
+nnoremap <silent> <s-F6> :colorscheme mayansmoke<CR>
+nnoremap <silent> <F7> :colorscheme darkburn<cr>
+nnoremap <silent> <s-F7> :colorscheme lanai<cr>
 map <F3> :NERDTreeToggle<CR>
 
 noremap <silent> <Leader>z :YRShow<CR>
@@ -446,8 +458,8 @@ noremap <silent> <Leader>z :YRShow<CR>
 autocmd FileType html set filetype=htmldjango.html
 autocmd FileType python set ft=python.django
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
-\ softtabstop=4 textwidth=79
-\ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+            \ softtabstop=4 textwidth=79
+            \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 let python_highlight_all=1
 let python_highlight_exceptions=0
 let python_highlight_builtins=0
@@ -463,9 +475,8 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 " Show syntax highlighting groups for word under cursor
 nmap <C-S-P> :call <SID>SynStack()<CR>
 function! <SID>SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+    if !exists("*synstack")
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-au Filetype html,xml,xsl source ~/.vim/bundle/closetag/scripts/closetag.vim
