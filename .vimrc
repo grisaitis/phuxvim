@@ -258,15 +258,18 @@ set completeopt=menu,longest,preview
 
 " ##### PLUGIN SETTINGS
 
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+
+au FileType html let b:delimitMate_matchpairs = "(:),[:]"
+let delimitMate_matchpairs = "(:),[:],{:}"
+
+let g:UltiSnipsExpandTrigger="<m-j>"
+let g:UltiSnipsJumpForwardTrigger="<m-j>"
+let g:UltiSnipsJumpBackwardTrigger="<m-k>"
 
 let g:tagbar_ctags_bin = '/usr/bin/ctags'
 
 let g:tagbar_width = 30
-
-:let g:buftabs_only_basename=1
 
 let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', 'bookmarkfile', 'bookmarkfileadd', 'bookmarkfileaddasselectedtext', 'bookmarkdir', 'bookmarkdiradd', 'filewithfullcwd', 'coveragefilechange', 'coveragefigeregister', 'dirwithcurrentbufferdir', 'buffertagwithselectedtext', 'buffertagwithcursorword']
 
@@ -444,6 +447,7 @@ map <leader>r :Mru<cr>
 nnoremap <silent> <F6> :colorscheme proton<CR>
 nnoremap <silent> <s-F6> :colorscheme mayansmoke<CR>
 nnoremap <silent> <F7> :colorscheme darkburn<cr>
+nnoremap <silent> <c-F7> :colorscheme wombat<cr>
 nnoremap <silent> <s-F7> :colorscheme lanai<cr>
 map <F3> :NERDTreeToggle<CR>
 
@@ -464,7 +468,6 @@ let python_highlight_all=1
 let python_highlight_exceptions=0
 let python_highlight_builtins=0
 autocmd FileType html,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
-autocmd FileType python set complete+=k~/.vim/syntax/python.vim isk+=.,_
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags

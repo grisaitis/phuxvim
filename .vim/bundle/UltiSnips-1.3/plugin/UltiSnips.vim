@@ -17,7 +17,7 @@ endif
 " The trigger used to expand a snippet.
 " NOTE: expansion and forward jumping can, but needn't be the same trigger
 if !exists("g:UltiSnipsExpandTrigger")
- let g:UltiSnipsExpandTrigger = "<tab>"
+ let g:UltiSnipsExpandTrigger = "<m-j>"
 endif
 
 " The trigger used to display all triggers that could possible 
@@ -29,12 +29,12 @@ endif
 " The trigger used to jump forward to the next placeholder. 
 " NOTE: expansion and forward jumping can, but needn't be the same trigger
 if !exists("g:UltiSnipsJumpForwardTrigger")
- let g:UltiSnipsJumpForwardTrigger = "<c-j>"
+ let g:UltiSnipsJumpForwardTrigger = "<m-j>"
 endif
 
 " The trigger to jump backward inside a snippet
 if !exists("g:UltiSnipsJumpBackwardTrigger")
- let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+ let g:UltiSnipsJumpBackwardTrigger = "<m-k>"
 endif
 
 " Should UltiSnips unmap select mode mappings automagically?
