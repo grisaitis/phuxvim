@@ -120,30 +120,6 @@ endsnippet
 # HTML TAGS #
 #############
 
-snippet p
-<p>${1}</p>
-endsnippet
-
-snippet td
-<td>${1}</td>
-endsnippet
-
-snippet tr
-<tr>${1}</tr>
-endsnippet
-
-snippet ol
-<ol>${1}</ol>
-endsnippet
-
-snippet ul
-<ul>${1}</ul>
-endsnippet
-
-snippet li
-<li>${1}</li>
-endsnippet
-
 snippet input "Input with Label"
 <label for="${2:${1/[[:alpha:]]+|( )/(?1:_:\L$0)/g}}">$1</label><input type="${3:text/submit/hidden/button}" name="${4:$2}" value="$5"${6: id="${7:$2}"}`!p x(snip)`>
 endsnippet

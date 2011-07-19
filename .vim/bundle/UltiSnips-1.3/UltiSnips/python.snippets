@@ -66,11 +66,14 @@ snip += "self._%s = %s" % (arg, arg)
             $0
 endsnippet
 
-snippet def 
+snippet def "define a function" b
 def ${1:function}(${2:request}):
     ${3:pass}
 endsnippet
 
+snippet today
+today is `date +%d.%m.%y`.
+endsnippet
 
 # doesn't expand when there is a word in front
 snippet /(^|(?<=\W))\./ "self." r

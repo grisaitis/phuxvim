@@ -129,9 +129,6 @@ set cmdheight=1
 " This makes more sense than the default of 1
 set winminheight=0
 
-" quickfix reuses open windows
-set switchbuf=useopen,usetab
-
 " set charracters for whitespaces, etc..
 set list
 set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
@@ -258,7 +255,11 @@ set completeopt=menu,longest,preview
 
 " ##### PLUGIN SETTINGS
 
+" conflicts with ack even in non-python files, so just disable it
+let g:pyflakes_use_quickfix = 0
 
+let g:Tb_UseSingleClick = 1
+let g:Tb_MapCTabSwitchWindows = 0
 
 au FileType html let b:delimitMate_matchpairs = "(:),[:]"
 let delimitMate_matchpairs = "(:),[:],{:}"
@@ -295,8 +296,10 @@ nmap k gk
 " delete char after cursor in insert mode, same as del key
 inoremap <c-l> <del>
 
-" cd to current buffer's cwd, disabled because of ack, fuzzy and commandt
+" cd to current buffer's cwd
 map <leader>cd :cd %:p:h<CR>:pwd<CR>
+
+" switch between last and current buffer
 map <leader>; :b#<cr>
 
 " Copy Paste
@@ -316,11 +319,11 @@ inoremap <c-cr> <c-o>O
 
 " Remap Enter in normal mode
 
-" Stay at the old line with STRG Enter
-nmap <c-cr> o<Esc>0c$<Esc>k
+" Stay at the old line with Shift Enter
+nmap <s-cr> o<Esc>0c$<Esc>k
 
-" Stay at this line and insert a new line above with Shift Enter
-nmap <s-cr> O<Esc>0c$<Esc>j
+" Stay at this line and insert a new line above with CTRL Enter
+nmap <c-cr> O<Esc>0c$<Esc>j
 
 " Use Q for formatting the current paragraph (or selection)
 vmap Q gq
@@ -329,14 +332,20 @@ nmap Q gqap
 " fast closing of html tags
 imap ;; </<c-x><c-o>
 
-" reload edited file
-map <silent> <F5> :e!<CR>
-
-
 " --- Remappings:
 
 " Open help for word under cursor
 map <F1> <ESC>:exec "help ".expand("<cword>")<CR>
+
+" nice navigation (ack, grep, helpgrep, quickfix..)
+:nnoremap <F2>  :helpgrep<space>
+" note: ack plugin is mapped to <leader>a
+:nnoremap <up>    :cprev<CR>
+:nnoremap <left>  :cpfile<CR>
+:nnoremap <down>    :cnext<CR>
+:nnoremap <right>  :cnfile<CR>
+:nnoremap <F3>    :copen<CR>
+:nnoremap <S-F3>    :ccl<CR>
 
 map <Space> <c-d>
 map <s-Space> <c-u>
@@ -377,6 +386,7 @@ noremap <silent> <c-l> <c-w>l
 noremap <silent> <c-j> <c-w>j
 noremap <silent> <c-k> <c-w>k
 noremap <silent> <c-h> <c-w>h
+noremap <silent> <F4> <c-w><c-w><c-w>_
 
 " Window resizing mappings
 map - <C-W>-
@@ -419,19 +429,20 @@ nmap <m-l> :bn<cr>
 
 
 
-
 " ##### PLUGIN MAPPINGS
 
 
 
+let g:UltiSnipsListSnippets="<s-tab>"
+
 let g:sparkupNextMapping = '<c-j>'
 
-nnoremap <silent> <F4> :TagbarToggle<cr>
+nnoremap <silent> <F8> :TagbarToggle<cr>
 
 nmap <silent> <Leader>u :GundoToggle<cr>
 
-map <silent> <leader>aw :exec "Ack ".expand("<cword>")<cr>
-map <leader>ac :Ack 
+map <silent> <c-F1> :exec "Ack ".expand("<cword>")<cr>
+map <leader>a :Ack<space>
 
 map <leader>f :FufCoverageFile<cr>
 map <leader>g :FufFileWithFullCwd<cr>
@@ -444,12 +455,11 @@ let g:pyref_mapping = 'K'
 
 map <leader>r :Mru<cr>
 
-nnoremap <silent> <F6> :colorscheme proton<CR>
+nnoremap <silent> <F6> :colorscheme pyte<CR>
 nnoremap <silent> <s-F6> :colorscheme mayansmoke<CR>
 nnoremap <silent> <F7> :colorscheme darkburn<cr>
-nnoremap <silent> <c-F7> :colorscheme wombat<cr>
 nnoremap <silent> <s-F7> :colorscheme lanai<cr>
-map <F3> :NERDTreeToggle<CR>
+map <c-F8> :NERDTreeToggle<CR>
 
 noremap <silent> <Leader>z :YRShow<CR>
 
@@ -483,3 +493,14 @@ function! <SID>SynStack()
     endif
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
+
+
+function! Ack(args)
+    let grepprg_bak=&grepprg
+    set grepprg=ack\ -H\ --nocolor\ --nogroup
+    execute "silent! grep " . a:args
+    botright copen
+    let &grepprg=grepprg_bak
+endfunction
+
+command! -nargs=* -complete=file Ack call Ack(<q-args>)

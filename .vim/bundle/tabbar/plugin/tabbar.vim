@@ -206,10 +206,10 @@ endif" %%
 
 " If we have enabled <C-TAB> and <C-S-TAB> to switch buffers~~
 " in the current window then perform the remapping
-if g:Tb_cTabSwitchBufs
-    noremap <C-TAB>   :call <SID>Bf_Cycle(1)<CR>:<BS>
-    noremap <C-S-TAB> :call <SID>Bf_Cycle(0)<CR>:<BS>
-endif "%%
+"if g:Tb_cTabSwitchBufs
+    "noremap <C-TAB>   :call <SID>Bf_Cycle(1)<CR>:<BS>
+    "noremap <C-S-TAB> :call <SID>Bf_Cycle(0)<CR>:<BS>
+"endif "%%
 
 
 " If we have enabled <C-TAB> and <C-S-TAB> to switch windows ~~
