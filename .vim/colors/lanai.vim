@@ -109,6 +109,9 @@ hi WildMenu        guifg=#66D9EF guibg=#000000
  hi LineNr          guifg=#BCBCBC guibg=#232526
  hi NonText         guifg=#BCBCBC guibg=#232526
 
+ hi link htmlTag Type
+ hi link htmlEndTag htmlTag
+ hi link htmlTagName htmlTag
 "hi rubyBeginEnd                gui=            guifg=            guibg=
 "hi rubyBoolean                 gui=            guifg=            guibg=
 "hi rubyClassOrModule            gui=bold        guifg=

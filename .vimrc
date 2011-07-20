@@ -62,7 +62,7 @@ set clipboard+=+
 
 " got scrolling options? uncomment this
 set ttyfast
-set ttyscroll=3 " speed
+set ttyscroll=1 " speed
 set lazyredraw " to avoid scrolling problems
 
 " show stuff at the left if not wrapping
@@ -148,12 +148,17 @@ set visualbell t_vb=
 
 set cul
 
-"cursors dont blink!
-"set gcr=a:blinkwait0
+
 
 " --- Color Options
 if has("gui_running")
     colorscheme lanai
+    "cursors dont blink!
+    set guicursor=n-v-c:block-Cursor
+    set guicursor+=i:ver100-iCursor
+    set guicursor+=a:blinkon0
+    highlight Cursor guifg=black guibg=green
+    highlight iCursor guifg=white guibg=magenta
 else
     colorscheme slate
 endif
@@ -164,7 +169,7 @@ endif
 set statusline= "clear it first
 
 " tim popes statusline
-set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
+set statusline=\ %n\ [%{winnr()}]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
 
 " Always display the status line, even if only one window is displayed
 set laststatus=2
@@ -245,7 +250,7 @@ set incsearch
 " Better command-line completion
 set wildmenu
 set wildignore+=*.pyc,*.zip,*.gz,*.bz,*.tar,*.jpg,*.png,*.gif,*.avi,*.wmv,*.ogg,*.mp3,*.mov
-set wildmode=longest:list
+set wildmode=longest,full:list
 
 " Completion settings in insertmode
 set complete=.,w,b,t,i
@@ -254,6 +259,8 @@ set completeopt=menu,longest,preview
 
 
 " ##### PLUGIN SETTINGS
+
+
 
 " conflicts with ack even in non-python files, so just disable it
 let g:pyflakes_use_quickfix = 0
@@ -264,15 +271,11 @@ let g:Tb_MapCTabSwitchWindows = 0
 au FileType html let b:delimitMate_matchpairs = "(:),[:]"
 let delimitMate_matchpairs = "(:),[:],{:}"
 
-let g:UltiSnipsExpandTrigger="<m-j>"
-let g:UltiSnipsJumpForwardTrigger="<m-j>"
-let g:UltiSnipsJumpBackwardTrigger="<m-k>"
-
 let g:tagbar_ctags_bin = '/usr/bin/ctags'
 
 let g:tagbar_width = 30
 
-let g:fuf_modesDisable = [ 'mrufile', 'mrucmd', 'bookmarkfile', 'bookmarkfileadd', 'bookmarkfileaddasselectedtext', 'bookmarkdir', 'bookmarkdiradd', 'filewithfullcwd', 'coveragefilechange', 'coveragefigeregister', 'dirwithcurrentbufferdir', 'buffertagwithselectedtext', 'buffertagwithcursorword']
+let g:fuf_modesDisable = ['quickfix', 'mrufile', 'mrucmd', 'bookmarkfile', 'bookmarkfileadd', 'bookmarkfileaddasselectedtext', 'bookmarkdir', 'bookmarkdiradd', 'filewithfullcwd', 'coveragefilechange', 'changelist', 'coveragefigeregister', 'dirwithcurrentbufferdir', 'buffertagwithselectedtext', 'buffertagwithcursorword', 'buffertag', 'taggedfile', 'line', 'help']
 
 
 
@@ -293,14 +296,8 @@ inoremap jk <esc>
 nmap j gj
 nmap k gk
 
-" delete char after cursor in insert mode, same as del key
-inoremap <c-l> <del>
-
 " cd to current buffer's cwd
-map <leader>cd :cd %:p:h<CR>:pwd<CR>
-
-" switch between last and current buffer
-map <leader>; :b#<cr>
+"map <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " Copy Paste
 map <leader>p "+p
@@ -310,6 +307,9 @@ vnoremap <leader>y "+y
 nmap <silent> <leader>n :set number!<cr>
 
 map <leader>w :set nowrap!<CR>
+
+" disable search highlighting till next search
+nnoremap <silent> <leader>h :noh<CR><C-l>
 
 " Enables you to save files with :w!! by using sudo if you forgot to open it as root
 cmap w!! %!sudo tee > /dev/null %
@@ -325,12 +325,19 @@ nmap <s-cr> o<Esc>0c$<Esc>k
 " Stay at this line and insert a new line above with CTRL Enter
 nmap <c-cr> O<Esc>0c$<Esc>j
 
-" Use Q for formatting the current paragraph (or selection)
-vmap Q gq
+" Use Q for formatting the current paragraph
 nmap Q gqap
 
 " fast closing of html tags
 imap ;; </<c-x><c-o>
+
+" love substitute! (load search-register, too)
+nnoremap <Leader>s q/is//<left>
+nnoremap <Leader>S q/i%s//<left>
+
+" global, too! (load search-register, too)
+nnoremap <Leader>g q/ig;;<left>
+nnoremap <Leader>G q/i%g;;<left>
 
 " --- Remappings:
 
@@ -338,17 +345,18 @@ imap ;; </<c-x><c-o>
 map <F1> <ESC>:exec "help ".expand("<cword>")<CR>
 
 " nice navigation (ack, grep, helpgrep, quickfix..)
-:nnoremap <F2>  :helpgrep<space>
+:nnoremap <s-F1>  :helpgrep<space>
 " note: ack plugin is mapped to <leader>a
-:nnoremap <up>    :cprev<CR>
-:nnoremap <left>  :cpfile<CR>
-:nnoremap <down>    :cnext<CR>
-:nnoremap <right>  :cnfile<CR>
-:nnoremap <F3>    :copen<CR>
-:nnoremap <S-F3>    :ccl<CR>
+:nnoremap <F2>    :cprev<CR>
+:nnoremap <s-f2>  :cpfile<CR>
+:nnoremap <F3>    :cnext<CR>
+:nnoremap <s-f3>  :cnfile<CR>
+map <leader>q :QFix<cr>
 
-map <Space> <c-d>
-map <s-Space> <c-u>
+nnoremap <space> @q
+map <s-space> <c-d>
+map <c-Space> <c-u>
+imap <s-space> <c-x><c-o>
 
 " Nice Indentation by Shift-h/l
 nmap < <<
@@ -367,6 +375,9 @@ cnoremap <C-P>      <Up>
 " remap Y to behave like C or D...
 map Y y$
 
+" delete char after cursor in insert mode, same as del key
+inoremap <c-l> <del>
+
 " jump to line AND column
 nnoremap ' `
 nnoremap ` '
@@ -374,9 +385,6 @@ nnoremap ` '
 " center match
 map n nzz
 map N Nzz
-
-" disable search highlighting till next search
-nnoremap <silent> <leader>h :noh<CR><C-l>
 
 " Remap gf to open a new split for the file under cursor
 map gf <C-W>f
@@ -387,6 +395,16 @@ noremap <silent> <c-j> <c-w>j
 noremap <silent> <c-k> <c-w>k
 noremap <silent> <c-h> <c-w>h
 noremap <silent> <F4> <c-w><c-w><c-w>_
+
+map <leader>1 :exe 1 . "wincmd w"<cr>
+map <leader>2 :exe 2 . "wincmd w"<cr>
+map <leader>3 :exe 3 . "wincmd w"<cr>
+map <leader>4 :exe 4 . "wincmd w"<cr>
+map <leader>5 :exe 5 . "wincmd w"<cr>
+map <leader>6 :exe 6 . "wincmd w"<cr>
+map <leader>7 :exe 7 . "wincmd w"<cr>
+map <leader>8 :exe 8 . "wincmd w"<cr>
+map <leader>9 :exe 9 . "wincmd w"<cr>
 
 " Window resizing mappings
 map - <C-W>-
@@ -399,7 +417,6 @@ noremap <C-TAB>   <C-W>w
 noremap <C-S-TAB> <C-W>W
 
 map <leader>m :marks<cr>
-map <leader>j :jumps<cr>
 
 " tabbing
 nmap <leader>t :tabnew<cr>
@@ -407,8 +424,8 @@ nmap <leader>t :tabnew<cr>
 " --- File mappings
 
 " Edit the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>:so ~/.gvimrc<cr>
+nmap <silent> <F5> :e $MYVIMRC<CR>
+nmap <silent> <S-F5> :so $MYVIMRC<CR>:so ~/.gvimrc<cr>
 
 " save with strg-s
 map <c-s> <esc>:w<cr>
@@ -420,7 +437,7 @@ map <m-q> :bd<cr>
 map <c-q> :BD<cr>
 
 " nice buffer switching
-" notice enabling wildmode is recommended to complete buffernames with this
+" notice enabling wildmode is recommended to tab-complete buffernames with this
 nnoremap <leader>lb :ls<cr>:b<space>
 
 " move to next or previous buffer with ALT+hl
@@ -435,7 +452,7 @@ nmap <m-l> :bn<cr>
 
 let g:UltiSnipsListSnippets="<s-tab>"
 
-let g:sparkupNextMapping = '<c-j>'
+let g:sparkupNextMapping = '<m-n>'
 
 nnoremap <silent> <F8> :TagbarToggle<cr>
 
@@ -445,10 +462,11 @@ map <silent> <c-F1> :exec "Ack ".expand("<cword>")<cr>
 map <leader>a :Ack<space>
 
 map <leader>f :FufCoverageFile<cr>
-map <leader>g :FufFileWithFullCwd<cr>
-map <leader>o :FufFileWithCurrentBufferDir<cr>
+map <leader>F :FufFileWithFullCwd<cr>
+map <leader>D :FufFileWithCurrentBufferDir<cr>
 map <leader>d :FufDirWithFullCwd<cr>
 map <leader>i :FufBuffer<cr>
+map <leader>I :FufJumpList<cr>
 
 
 let g:pyref_mapping = 'K'
@@ -456,13 +474,16 @@ let g:pyref_mapping = 'K'
 map <leader>r :Mru<cr>
 
 nnoremap <silent> <F6> :colorscheme pyte<CR>
-nnoremap <silent> <s-F6> :colorscheme mayansmoke<CR>
+nnoremap <silent> <s-F6> :colorscheme codeburn<CR>
 nnoremap <silent> <F7> :colorscheme darkburn<cr>
 nnoremap <silent> <s-F7> :colorscheme lanai<cr>
 map <c-F8> :NERDTreeToggle<CR>
 
 noremap <silent> <Leader>z :YRShow<CR>
 
+let g:UltiSnipsExpandTrigger="<m-j>"
+let g:UltiSnipsJumpForwardTrigger="<m-j>"
+let g:UltiSnipsJumpBackwardTrigger="<m-k>"
 
 
 " ##### AUTOCMDS
@@ -474,6 +495,7 @@ autocmd FileType python set ft=python.django
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
             \ softtabstop=4 textwidth=79
             \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+            \ iskeyword +=.,(
 let python_highlight_all=1
 let python_highlight_exceptions=0
 let python_highlight_builtins=0
@@ -484,23 +506,20 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 
-
-" Show syntax highlighting groups for word under cursor
-nmap <C-S-P> :call <SID>SynStack()<CR>
-function! <SID>SynStack()
-    if !exists("*synstack")
-        return
-    endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-
-
-function! Ack(args)
-    let grepprg_bak=&grepprg
-    set grepprg=ack\ -H\ --nocolor\ --nogroup
-    execute "silent! grep " . a:args
-    botright copen
-    let &grepprg=grepprg_bak
+" toggles the quickfix window.
+command! -bang -nargs=? QFix call QFixToggle(<bang>0)
+function! QFixToggle(forced)
+  if exists("g:qfix_win") && a:forced == 0
+    cclose
+  else
+    execute "copen " . g:jah_Quickfix_Win_Height
+  endif
 endfunction
 
-command! -nargs=* -complete=file Ack call Ack(<q-args>)
+" used to track the quickfix window
+augroup QFixToggle
+ autocmd!
+ autocmd BufWinEnter quickfix let g:qfix_win = bufnr("$")
+ autocmd BufWinLeave * if exists("g:qfix_win") && expand("<abuf>") == g:qfix_win | unlet! g:qfix_win | endif
+augroup END
+let g:jah_Quickfix_Win_Height=10

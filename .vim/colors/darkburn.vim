@@ -76,7 +76,7 @@ hi Character       guifg=#dca3a3 gui=bold
 hi Comment         guifg=#7f9f7f gui=italic
 hi Conditional     guifg=#f0dfaf gui=bold
 hi Constant        guifg=#dca3a3 gui=bold
-hi Cursor          guifg=#000d18 guibg=#8faf9f gui=bold
+hi Cursor          guifg=white guibg=magenta gui=bold
 hi Debug           guifg=#bca3a3 gui=bold
 hi Define          guifg=#ffcfaf gui=bold
 hi Delimiter       guifg=#8f8f8f
@@ -112,7 +112,7 @@ hi SpecialComment  guifg=#82a282 gui=bold
 hi Special         guifg=#9fbfd6
 hi SpecialKey      guifg=#9ece9e
 hi Statement       guifg=#6fb86f  gui=none
-hi StatusLine      guifg=#313633 guibg=#ccdc90
+hi StatusLine      guifg=#414643 guibg=#ccdc90
 hi StatusLineNC    guifg=#2e3330 guibg=#88b090
 hi StorageClass    guifg=#c3bf9f gui=bold
 hi String          guifg=#b75151
