@@ -60,6 +60,9 @@ set notimeout ttimeout ttimeoutlen=200
 set clipboard+=unnamed
 set clipboard+=+
 
+" use open windows for buffer switching
+set switchbuf=useopen
+
 " got scrolling options? uncomment this
 set ttyfast
 set ttyscroll=1 " speed
@@ -204,7 +207,8 @@ set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 " automatically fold code depending on syntax highlighing
 set foldmethod=indent
-set fillchars=vert:\|,fold:\ ,diff:-
+set foldlevel=0
+"set fillchars=vert:\|,fold:\ ,diff:-
 
 
 
@@ -272,8 +276,8 @@ au FileType html let b:delimitMate_matchpairs = "(:),[:]"
 let delimitMate_matchpairs = "(:),[:],{:}"
 
 let g:tagbar_ctags_bin = '/usr/bin/ctags'
-
 let g:tagbar_width = 30
+let g:tagbar_autofocus = 1
 
 let g:fuf_modesDisable = ['quickfix', 'mrufile', 'mrucmd', 'bookmarkfile', 'bookmarkfileadd', 'bookmarkfileaddasselectedtext', 'bookmarkdir', 'bookmarkdiradd', 'filewithfullcwd', 'coveragefilechange', 'changelist', 'coveragefigeregister', 'dirwithcurrentbufferdir', 'buffertagwithselectedtext', 'buffertagwithcursorword', 'buffertag', 'taggedfile', 'line', 'help']
 
@@ -281,6 +285,54 @@ let g:fuf_modesDisable = ['quickfix', 'mrufile', 'mrucmd', 'bookmarkfile', 'book
 
 " ##### MAPPINGS
 
+
+" experimenting
+" Jump to the next or previous line that has the same level or a lower
+" level of indentation than the current line.
+"
+" exclusive (bool): true: Motion is exclusive
+" false: Motion is inclusive
+" fwd (bool): true: Go to next line
+" false: Go to previous line
+" lowerlevel (bool): true: Go to line with lower indentation level
+" false: Go to line with the same indentation level
+" skipblanks (bool): true: Skip blank lines
+" false: Don't skip blank lines
+function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
+  let line = line('.')
+  let column = col('.')
+  let lastline = line('$')
+  let indent = indent(line)
+  let stepvalue = a:fwd ? 1 : -1
+  while (line > 0 && line <= lastline)
+    let line = line + stepvalue
+    if ( ! a:lowerlevel && indent(line) == indent ||
+          \ a:lowerlevel && indent(line) < indent)
+      if (! a:skipblanks || strlen(getline(line)) > 0)
+        if (a:exclusive)
+          let line = line - stepvalue
+        endif
+        exe line
+        exe "normal " column . "|"
+        return
+      endif
+    endif
+  endwhile
+endfunction
+
+" Moving back and forth between lines of same or lower indentation.
+nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
+nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
+nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
+vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
+vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
+vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
+vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
+onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
+onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
+onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
 
 
 "--- General mappings
@@ -438,7 +490,7 @@ map <c-q> :BD<cr>
 
 " nice buffer switching
 " notice enabling wildmode is recommended to tab-complete buffernames with this
-nnoremap <leader>lb :ls<cr>:b<space>
+nnoremap <leader>l :ls<cr>:b<space>
 
 " move to next or previous buffer with ALT+hl
 nmap <m-h> :bp<cr>
@@ -456,17 +508,19 @@ let g:sparkupNextMapping = '<m-n>'
 
 nnoremap <silent> <F8> :TagbarToggle<cr>
 
+map <s-F8> :NERDTreeToggle<CR>
+
 nmap <silent> <Leader>u :GundoToggle<cr>
 
-map <silent> <c-F1> :exec "Ack ".expand("<cword>")<cr>
-map <leader>a :Ack<space>
+map <silent> <c-F1> :exec "Ack! ".expand("<cword>")<cr>
+map <leader>a :Ack!<space>
 
 map <leader>f :FufCoverageFile<cr>
-map <leader>F :FufFileWithFullCwd<cr>
-map <leader>D :FufFileWithCurrentBufferDir<cr>
+map <leader>o :FufFileWithFullCwd<cr>
+map <leader>k :FufFileWithCurrentBufferDir<cr>
 map <leader>d :FufDirWithFullCwd<cr>
 map <leader>i :FufBuffer<cr>
-map <leader>I :FufJumpList<cr>
+map <leader>j :FufJumpList<cr>
 
 
 let g:pyref_mapping = 'K'
@@ -477,7 +531,6 @@ nnoremap <silent> <F6> :colorscheme pyte<CR>
 nnoremap <silent> <s-F6> :colorscheme codeburn<CR>
 nnoremap <silent> <F7> :colorscheme darkburn<cr>
 nnoremap <silent> <s-F7> :colorscheme lanai<cr>
-map <c-F8> :NERDTreeToggle<CR>
 
 noremap <silent> <Leader>z :YRShow<CR>
 
@@ -497,8 +550,6 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
             \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
             \ iskeyword +=.,(
 let python_highlight_all=1
-let python_highlight_exceptions=0
-let python_highlight_builtins=0
 autocmd FileType html,htmldjango setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
